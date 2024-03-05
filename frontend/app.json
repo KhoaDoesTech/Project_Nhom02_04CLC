@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "name": "DaoHoangDang_21110163",
+    "slug": "DaoHoangDang_21110163",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/loading.jpg",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/loading.jpg",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/loading.jpg",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
