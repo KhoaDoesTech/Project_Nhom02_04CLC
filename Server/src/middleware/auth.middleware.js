@@ -6,7 +6,7 @@ const {
   AuthFailureError,
 } = require('../helpers/error.response');
 const { findByUserId } = require('../models/repositories/token.repo');
-const { verifyJWT } = require('../utils/jwtUtils');
+const { verifyJWT } = require('../utils/jwt');
 const asyncHandler = require('./asyncHandler');
 
 const authentication = asyncHandler(async (req, res, next) => {

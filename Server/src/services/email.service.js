@@ -1,0 +1,42 @@
+'use strict';
+
+const { BadRequestError } = require('../helpers/error.response');
+const {
+  getTemplate,
+  createTemplate,
+  findTemplateByTag,
+} = require('../models/repositories/template.repo');
+
+class EmailService {
+  static addTemplate = async ({
+    tem_name,
+    tem_html,
+    tem_tag = 'marketing',
+    tem_status = true,
+  }) => {
+    const foundTemplate = await getTemplate(tem_name);
+    if (foundTemplate) throw new BadRequestError('Template name has used');
+
+    const tag = ['otp', 'success', 'url', 'welcome', 'marketing'];
+    if (tag.includes(tem_tag) || tem_status) {
+      const existTemplate = await findTemplateByTag(tem_tag);
+
+      if (existTemplate)
+        throw new BadRequestError(`Just one ${tem_tag} template is active`);
+    }
+
+    const newTemplate = await createTemplate({
+      tem_name,
+      tem_html,
+      tem_tag,
+      tem_status,
+    });
+    if (!newTemplate) throw new BadRequestError("Can't create template");
+
+    return {
+      template: newTemplate,
+    };
+  };
+}
+
+module.exports = EmailService;

@@ -3,6 +3,7 @@
 const dev = {
   app: {
     port: process.env.DEV_APP_PORT,
+    url: process.env.DEV_APP_URL,
   },
   db: {
     url: process.env.DEV_DB_URL,
@@ -12,6 +13,7 @@ const dev = {
 const pro = {
   app: {
     port: process.env.PRO_APP_PORT,
+    url: process.env.PRO_APP_URL,
   },
   db: {
     url: process.env.PRO_DB_URL,

@@ -14,8 +14,29 @@ class AccessController {
 
   verifyEmail = async (req, res, next) => {
     new OK({
-      message: 'Verify Email Success',
+      message: 'Your email is verified',
       metadata: await AccessService.verifyEmail(req.body),
+    }).send(res);
+  };
+
+  resendOtp = async (req, res, next) => {
+    new OK({
+      message: 'New OTP has been sent to your registered email account',
+      metadata: await AccessService.resendOtp(req.body),
+    }).send(res);
+  };
+
+  forgetPassword = async (req, res, next) => {
+    new OK({
+      message: 'Reset Password Link has been sent',
+      metadata: await AccessService.forgetPassword(req.body),
+    }).send(res);
+  };
+
+  resetPassword = async (req, res, next) => {
+    new OK({
+      message: 'Password Reset Successfully',
+      metadata: await AccessService.resetPassword(req.body),
     }).send(res);
   };
 

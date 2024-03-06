@@ -8,9 +8,9 @@ const COLLECTION_NAME = 'Otps';
 // Declare the Schema of the Mongo model
 const otpSchema = new Schema(
   {
-    email: { type: String, required: true },
-    otp: { type: String, required: true },
-    time: { type: Date, default: Date.now, index: { expires: 20 } }, // 20 seconds
+    otp_email: { type: String, required: true },
+    otp_token: { type: String, required: true },
+    expireAt: { type: Date, default: Date.now, expires: 60 }, // 60 seconds
   },
   {
     timestamps: true,

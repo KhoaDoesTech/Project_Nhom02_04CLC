@@ -2,12 +2,25 @@
 
 const userModel = require('../user.model');
 
-const checkUserExists = async (email) => {
+const getUser = async (email) => {
   return await userModel.findOne({ usr_email: email }).lean();
 };
 
 const createUser = async (info) => {
   return await userModel.create(info);
+};
+
+const updatePassword = async (email, password) => {
+  const query = {
+      usr_email: email,
+    },
+    updateSet = {
+      $set: {
+        usr_password: password,
+      },
+    },
+    options = { upsert: true, new: true };
+  return await userModel.findOneAndUpdate(query, updateSet, options);
 };
 
 const activeUser = async (email) => {
@@ -24,7 +37,8 @@ const activeUser = async (email) => {
 };
 
 module.exports = {
-  checkUserExists,
+  getUser,
   createUser,
   activeUser,
+  updatePassword,
 };

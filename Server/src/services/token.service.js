@@ -1,8 +1,8 @@
 'use strict';
 
 const { updateTokens } = require('../models/repositories/token.repo');
-const { generateKeyPair } = require('../utils/cipherUtils');
-const { createTokenPair } = require('../utils/jwtUtils');
+const { generateKeyPair } = require('../utils/crypto');
+const { createTokenPair } = require('../utils/jwt');
 
 class TokenService {
   static saveToken = async (userId, publicKey, refreshToken) => {
