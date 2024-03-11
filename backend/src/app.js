@@ -19,7 +19,7 @@ app.use(
 app.use(cors());
 
 // init db
-require('./dbs/init.mongodb');
+require('./initializers/init.mongodb');
 
 // init routes
 app.use('/', require('./routes/v1'));

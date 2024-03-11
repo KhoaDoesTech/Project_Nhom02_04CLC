@@ -1,6 +1,6 @@
 'use strict';
 
-const transporter = require('../dbs/init.nodemailer');
+const transporter = require('../initializers/init.nodemailer');
 const { NotFoundError } = require('../helpers/error.response');
 const {
   getTemplate,

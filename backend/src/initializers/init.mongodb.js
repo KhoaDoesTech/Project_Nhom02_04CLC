@@ -7,7 +7,7 @@ const {
 } = require('../configs/config.mongodb');
 
 const connectString = `${url}`;
-
+console.log(connectString);
 class Database {
   constructor() {
     this.connect();
