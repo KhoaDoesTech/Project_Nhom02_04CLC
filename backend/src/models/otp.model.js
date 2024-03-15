@@ -10,6 +10,7 @@ const otpSchema = new Schema(
   {
     otp_email: { type: String, required: true },
     otp_token: { type: String, required: true },
+    otp_type: { type: String, default: 'verify', enum: ['verify', 'reset'] },
     expireAt: { type: Date, default: Date.now, expires: 60 }, // 60 seconds
   },
   {

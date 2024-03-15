@@ -21,7 +21,9 @@ const unGetSelectData = (select = []) => {
 const replacePlaceholder = (template, params) => {
   Object.keys(params).forEach((k) => {
     const placeholder = `{{${k}}}`;
-    template = template.replace(new RegExp(placeholder, 'g'), params[k]);
+    if (template.includes(placeholder)) {
+      template = template.replace(new RegExp(placeholder, 'g'), params[k]);
+    }
   });
 
   return template;

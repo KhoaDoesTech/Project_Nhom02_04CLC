@@ -10,10 +10,8 @@ const templateSchema = new Schema(
   {
     tem_name: { type: String, required: true },
     tem_html: { type: String, required: true },
-    tem_status: {
-      type: Boolean,
-      default: true,
-    },
+    tem_subject: { type: String, required: true },
+    tem_status: { type: Boolean, default: true },
     tem_tag: {
       type: String,
       default: 'marketing',

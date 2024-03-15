@@ -9,8 +9,9 @@ const COLLECTION_NAME = 'Users';
 // Declare the Schema of the Mongo model
 const userSchema = new Schema(
   {
-    // usr_id: { type: Number, required: true },
     // usr_slug: { type: String, required: true },
+    usr_google_id: { type: String, default: '' },
+    usr_github_id: { type: String, default: '' },
     usr_email: { type: String, required: true },
     usr_password: { type: String, default: '' },
     usr_salt: { type: String, default: '' },
@@ -18,7 +19,6 @@ const userSchema = new Schema(
     usr_phone: { type: String, default: '' },
     usr_sex: { type: String, default: '' },
     usr_avatar: { type: String, default: '' },
-    usr_date_of_birth: { type: Date, default: null },
     usr_role: { type: Schema.Types.ObjectId, ref: 'Role' },
     usr_status: {
       type: String,

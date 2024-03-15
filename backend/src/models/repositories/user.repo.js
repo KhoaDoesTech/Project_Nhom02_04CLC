@@ -2,8 +2,12 @@
 
 const userModel = require('../user.model');
 
-const getUser = async (email) => {
+const findUserByEmail = async (email) => {
   return await userModel.findOne({ usr_email: email }).lean();
+};
+
+const findUserById = async (userId) => {
+  return await userModel.findOne({ _id: userId }).lean();
 };
 
 const createUser = async (info) => {
@@ -37,7 +41,8 @@ const activeUser = async (email) => {
 };
 
 module.exports = {
-  getUser,
+  findUserByEmail,
+  findUserById,
   createUser,
   activeUser,
   updatePassword,

@@ -5,6 +5,7 @@ const dev = {
     service: process.env.DEV_MAILER_SERVICE,
     user: process.env.DEV_MAILER_USER,
     pass: process.env.DEV_MAILER_PASS,
+    port: process.env.DEV_MAILER_PORT,
   },
 };
 
@@ -13,6 +14,7 @@ const pro = {
     service: process.env.PRO_MAILER_SERVICE,
     user: process.env.PRO_MAILER_USER,
     pass: process.env.PRO_MAILER_PASS,
+    port: process.env.PRO_MAILER_PORT,
   },
 };
 

@@ -4,17 +4,17 @@ const { BadRequestError } = require('../helpers/error.response');
 const { saveOtp, getOtp } = require('../models/repositories/otp.repo');
 const { generateOTP, comparePassword } = require('../utils/crypto');
 
-const createOtp = async (email) => {
+const createOtp = async ({ email, type }) => {
   const otp = await generateOTP();
-
-  const newToken = await saveOtp(email, otp);
+  console.log(type);
+  const newToken = await saveOtp(email, otp, type);
   if (!newToken) throw new BadRequestError("Can't save OTP");
 
   return otp;
 };
 
-const validateOtp = async ({ email, otp }) => {
-  const foundOtp = await getOtp(email);
+const validateOtp = async ({ email, otp, type }) => {
+  const foundOtp = await getOtp({ email, type });
   if (!foundOtp) throw new BadRequestError('OTP has expired');
 
   const isMatched = await comparePassword(otp, foundOtp.otp_token);

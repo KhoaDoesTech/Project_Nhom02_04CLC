@@ -2,10 +2,17 @@
 
 const templateModel = require('../template.model');
 
-const createTemplate = async ({ tem_name, tem_html, tem_tag, tem_status }) => {
+const createTemplate = async ({
+  tem_name,
+  tem_html,
+  tem_subject,
+  tem_tag,
+  tem_status,
+}) => {
   return await templateModel.create({
     tem_name,
     tem_html,
+    tem_subject,
     tem_tag,
     tem_status,
   });

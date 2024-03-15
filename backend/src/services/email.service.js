@@ -11,6 +11,7 @@ class EmailService {
   static addTemplate = async ({
     tem_name,
     tem_html,
+    tem_subject,
     tem_tag = 'marketing',
     tem_status = true,
   }) => {
@@ -27,6 +28,7 @@ class EmailService {
 
     const newTemplate = await createTemplate({
       tem_name,
+      tem_subject,
       tem_html,
       tem_tag,
       tem_status,
@@ -37,6 +39,10 @@ class EmailService {
       template: newTemplate,
     };
   };
+
+  // view all
+
+  // view one
 }
 
 module.exports = EmailService;

@@ -2,16 +2,13 @@
 
 const transporter = require('../initializers/init.nodemailer');
 const { NotFoundError } = require('../helpers/error.response');
-const {
-  getTemplate,
-  findTemplateByTag,
-} = require('../models/repositories/template.repo');
+const { findTemplateByTag } = require('../models/repositories/template.repo');
 const { replacePlaceholder } = require('./misc');
 
 const sendEmail = async ({ html, toEmail, subject, attachments = [] }) => {
   try {
     const mailOptions = {
-      from: '"ShareAndCare" <khoahoc72@gmail.com>',
+      from: '"ShareAndCare" <shareandcareteam@hotmail.com>',
       to: toEmail,
       subject,
       html,
@@ -30,65 +27,21 @@ const sendEmail = async ({ html, toEmail, subject, attachments = [] }) => {
   }
 };
 
-const sendOtpEmail = async ({ email, otp }) => {
-  const template = await findTemplateByTag('otp');
+const sendTemplateEmail = async ({ email, tag, params = null }) => {
+  const template = await findTemplateByTag(tag);
   if (!template) throw new NotFoundError('Template not found');
 
-  const content = replacePlaceholder(template.tem_html, {
-    otpCode: otp,
-  });
+  const subject = params
+    ? replacePlaceholder(template.tem_subject, params)
+    : template.tem_subject;
+  const content = params
+    ? replacePlaceholder(template.tem_html, params)
+    : template.tem_html;
 
   await sendEmail({
-    html: content,
+    subject,
     toEmail: email,
-    subject: `Mã xác minh của bạn là: ${otp}`,
-  });
-
-  return 1;
-};
-
-const sendWelcomeEmail = async (user) => {
-  const template = await findTemplateByTag('welcome');
-  if (!template) throw new NotFoundError('Template not found');
-
-  const content = replacePlaceholder(template.tem_html, {
-    userName: user.usr_name,
-  });
-
-  await sendEmail({
     html: content,
-    toEmail: user.usr_email,
-    subject: `Welcome to ShareAndCare, ${user.usr_name}`,
-  });
-
-  return 1;
-};
-
-const sendUrlEmail = async ({ email, url }) => {
-  const template = await findTemplateByTag('url');
-  if (!template) throw new NotFoundError('Template not found');
-
-  const content = replacePlaceholder(template.tem_html, {
-    resetPasswordUrl: url,
-  });
-
-  await sendEmail({
-    html: content,
-    toEmail: email,
-    subject: `Reset Password Link`,
-  });
-
-  return 1;
-};
-
-const sendSuccessEmail = async (email) => {
-  const template = await findTemplateByTag('success');
-  if (!template) throw new NotFoundError('Template not found');
-
-  await sendEmail({
-    html: template.tem_html,
-    toEmail: email,
-    subject: `Password Reset Successfully`,
   });
 
   return 1;
@@ -96,8 +49,5 @@ const sendSuccessEmail = async (email) => {
 
 module.exports = {
   sendEmail,
-  sendOtpEmail,
-  sendWelcomeEmail,
-  sendUrlEmail,
-  sendSuccessEmail,
+  sendTemplateEmail,
 };

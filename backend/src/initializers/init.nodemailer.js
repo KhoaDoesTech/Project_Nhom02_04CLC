@@ -2,18 +2,21 @@
 
 const nodemailer = require('nodemailer');
 const {
-  mailer: { service, user, pass },
+  mailer: { service, user, pass, port },
 } = require('../configs/config.nodemailer');
 
 console.log(service);
 
 const mailConfig = {
   host: service,
-  port: 2525,
-  // secure: true,
+  secureConnection: false, // TLS requires secureConnection to be false
+  port: port,
   auth: {
     user: user,
     pass: pass,
+  },
+  tls: {
+    ciphers: 'SSLv3',
   },
 };
 
