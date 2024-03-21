@@ -5,7 +5,7 @@ const { NotFoundError } = require('../helpers/error.response');
 const { findTemplateByTag } = require('../models/repositories/template.repo');
 const { replacePlaceholder } = require('./misc');
 
-const sendEmail = async ({ html, toEmail, subject, attachments = [] }) => {
+const sendEmail = ({ html, toEmail, subject, attachments = [] }) => {
   try {
     const mailOptions = {
       from: '"ShareAndCare" <shareandcareteam@hotmail.com>',
@@ -15,7 +15,7 @@ const sendEmail = async ({ html, toEmail, subject, attachments = [] }) => {
       attachments,
     };
 
-    await transporter.sendMail(mailOptions, (err, info) => {
+    transporter.sendMail(mailOptions, (err, info) => {
       if (err) {
         return console.log(err);
       }
@@ -38,7 +38,7 @@ const sendTemplateEmail = async ({ email, tag, params = null }) => {
     ? replacePlaceholder(template.tem_html, params)
     : template.tem_html;
 
-  await sendEmail({
+  sendEmail({
     subject,
     toEmail: email,
     html: content,

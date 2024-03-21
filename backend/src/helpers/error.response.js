@@ -1,6 +1,6 @@
 'use strict';
 
-const { ReasonPhrases, StatusCodes } = require('../constants');
+import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 
 class ErrorResponse extends Error {
   constructor(message, status) {
@@ -35,6 +35,16 @@ class AuthFailureError extends ErrorResponse {
   }
 }
 
+class TokenExpiredError extends ErrorResponse {
+  constructor(
+    message = ReasonPhrases.UNAUTHORIZED,
+    statusCode = StatusCodes.UNAUTHORIZED
+  ) {
+    super(message, statusCode);
+    this.metadata = { 'Is-Token-Expired': true };
+  }
+}
+
 class NotFoundError extends ErrorResponse {
   constructor(
     message = ReasonPhrases.NOT_FOUND,
@@ -59,4 +69,5 @@ module.exports = {
   AuthFailureError,
   NotFoundError,
   ForbiddenError,
+  TokenExpiredError,
 };

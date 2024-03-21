@@ -15,7 +15,7 @@ const {
 
 const {
   app: { url },
-} = require('../configs/config.mongodb');
+} = require('../configs/environment');
 
 const appUrl = `${url}`;
 

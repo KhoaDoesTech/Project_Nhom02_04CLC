@@ -1,7 +1,7 @@
 'use strict';
 
-const { CREATED, OK } = require('../helpers/success.response');
-const AccessService = require('../services/access.service');
+import { CREATED, OK } from '../helpers/success.response';
+import AccessService from '../services/access.service';
 
 class AccessController {
   signUp = async (req, res, next) => {

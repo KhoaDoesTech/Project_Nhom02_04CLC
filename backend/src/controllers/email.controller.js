@@ -1,6 +1,6 @@
 'use strict';
 
-const { CREATED, OK } = require('../helpers/success.response');
+const { CREATED } = require('../helpers/success.response');
 const EmailService = require('../services/email.service');
 
 class EmailController {

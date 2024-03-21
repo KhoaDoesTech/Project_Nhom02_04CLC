@@ -3,9 +3,7 @@
 const nodemailer = require('nodemailer');
 const {
   mailer: { service, user, pass, port },
-} = require('../configs/config.nodemailer');
-
-console.log(service);
+} = require('../configs/environment');
 
 const mailConfig = {
   host: service,

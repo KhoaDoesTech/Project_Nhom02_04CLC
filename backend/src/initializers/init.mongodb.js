@@ -1,31 +1,28 @@
 'use strict';
 
 const mongoose = require('mongoose');
-
 const {
   db: { url },
-} = require('../configs/config.mongodb');
+} = require('../configs/environment');
 
 const connectString = `${url}`;
-console.log(connectString);
+
 class Database {
   constructor() {
     this.connect();
   }
 
-  connect(type = 'mongodb') {
-    if (1 === 1) {
-      mongoose.set('debug', true);
-      mongoose.set('debug', { color: true });
-      mongoose.set('debug', { shell: true });
-    }
+  connect() {
+    mongoose.set('debug', true);
+    mongoose.set('debug', { color: true });
+    mongoose.set('debug', { shell: true });
 
     mongoose
       .connect(connectString, {
         maxPoolSize: 50,
       })
-      .then((_) => console.log(`Connected Mongodb Success`))
-      .catch((err) => console.log(`Error Connect:::`, err));
+      .then(() => console.log('Connected Mongodb Success'.green))
+      .catch((err) => console.log(`Error Connect::: ${err}`.red));
   }
 
   static getInstance() {
@@ -37,4 +34,5 @@ class Database {
 }
 
 const instanceMongodb = Database.getInstance();
+
 module.exports = instanceMongodb;

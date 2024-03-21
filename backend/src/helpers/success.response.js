@@ -1,6 +1,6 @@
 'use strict';
 
-const { ReasonPhrases, StatusCodes } = require('../constants');
+import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 
 class SuccessResponse {
   constructor({
@@ -14,7 +14,7 @@ class SuccessResponse {
     this.metadata = metadata;
   }
 
-  send(res, headers = {}) {
+  send(res) {
     return res.status(this.status).json(this);
   }
 }
