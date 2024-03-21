@@ -28,7 +28,36 @@ const { getOtp } = require('../models/repositories/otp.repo');
 const TokenService = require('./token.service');
 
 class AccessService {
-  // refreshToken
+  static refreshToken = async ({ refreshToken, user, keyStore }) => {
+    const { email } = user;
+
+    if (keyStore.refresh_token !== refreshToken)
+      throw new AuthFailureError('Shop not registerd');
+
+    const foundUser = await findUserByEmail(email);
+    if (!foundUser) throw new BadRequestError('User not registered');
+
+    // create cap moi
+    const tokens = await TokenService.createTokens(foundUser);
+
+    // update
+    await keyStore.updateOne({
+      $set: {
+        refresh_token: tokens.refreshToken,
+      },
+      $addToSet: {
+        refresh_tokens_used: refreshToken,
+      },
+    });
+
+    return {
+      user: getInfoData({
+        fields: ['_id', 'usr_name', 'usr_email'],
+        object: foundUser,
+      }),
+      tokens,
+    };
+  };
 
   static logIn = async ({ email, password }) => {
     const foundUser = await findUserByEmail(email);
@@ -46,7 +75,10 @@ class AccessService {
     const tokens = await TokenService.createTokens(foundUser);
 
     return {
-      user: foundUser,
+      user: getInfoData({
+        fields: ['_id', 'usr_name', 'usr_email'],
+        object: foundUser,
+      }),
       tokens,
     };
   };
@@ -93,11 +125,11 @@ class AccessService {
       throw new BadRequestError(
         'Only after one minute you can request for another otp!'
       );
-    console.log(1);
+
     // Send OTP
     const token = await createOtp({ email, type: 'reset' });
     const resetPasswordUrl = `${appUrl}/reset-password?token=${token}`;
-    console.log(2);
+
     const sentEmail = await sendTemplateEmail({
       email,
       tag: 'url',

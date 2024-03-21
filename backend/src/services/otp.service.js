@@ -6,7 +6,7 @@ const { generateOTP, comparePassword } = require('../utils/crypto');
 
 const createOtp = async ({ email, type }) => {
   const otp = await generateOTP();
-  console.log(type);
+
   const newToken = await saveOtp(email, otp, type);
   if (!newToken) throw new BadRequestError("Can't save OTP");
 

@@ -4,6 +4,17 @@ import { CREATED, OK } from '../helpers/success.response';
 import AccessService from '../services/access.service';
 
 class AccessController {
+  refreshToken = async (req, res, next) => {
+    new OK({
+      message: 'Get Refresh Token success!',
+      metadata: await AccessService.refreshToken({
+        refreshToken: req.refreshToken,
+        user: req.user,
+        keyStore: req.keyStore,
+      }),
+    }).send(res);
+  };
+
   signUp = async (req, res, next) => {
     new CREATED({
       message:
