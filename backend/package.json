@@ -6,6 +6,7 @@
   "description": "ShareAndCare API Project",
   "license": "ISC",
   "scripts": {
+    "test": "jest",
     "lint": "eslint src --ext js --report-unused-disable-directives --max-warnings 0",
     "clean": "rm -rf build && mkdir build",
     "build-babel": "babel ./src -d ./build/src",
@@ -24,6 +25,7 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.24.1",
+    "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "colors": "^1.4.0",
     "compression": "^1.7.4",
@@ -36,6 +38,7 @@
     "helmet": "^7.0.0",
     "hpp": "^0.2.3",
     "http-status-codes": "^2.3.0",
+    "jest": "^29.7.0",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "mongoose": "^8.0.0",
@@ -56,6 +59,7 @@
     "@babel/preset-env": "^7.24.3",
     "babel-plugin-module-resolver": "^5.0.0",
     "eslint": "^8.47.0",
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "supertest": "^6.3.4"
   }
 }

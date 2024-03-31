@@ -16,10 +16,10 @@ const productSchema = new Schema(
     },
     product_description: { type: String },
     product_slug: { type: String }, // quan-jean-cao-cap
-    product_price: { type: Number, require: true },
-    product_quantity: { type: Number, require: true },
-
     product_shop: { type: Schema.Types.ObjectId, ref: 'User' },
+    product_price: { type: Number, required: true },
+    product_type: { type: String, required: true },
+    product_quantity: { type: Number, required: true },
     product_attributes: { type: Schema.Types.Mixed, required: true },
     product_ratingsAverage: {
       type: Number,
@@ -28,8 +28,9 @@ const productSchema = new Schema(
       max: [5, 'Rating must be below 5.0'],
       set: (val) => Math.round(val * 10) / 10,
     },
+    variant_quantity: { type: Number, default: 0 },
     product_variations: { type: Array, default: [] },
-    isDraft: { type: Boolean, default: false, index: true, select: false },
+    product_options: { type: Array, default: [] },
     isPublished: { type: Boolean, default: true, index: true },
   },
   {
@@ -48,6 +49,4 @@ productSchema.pre('save', function (next) {
 });
 
 //Export the model
-module.exports = {
-  product: model(DOCUMENT_NAME, productSchema),
-};
+module.exports = model(DOCUMENT_NAME, productSchema);

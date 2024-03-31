@@ -18,6 +18,30 @@ const unGetSelectData = (select = []) => {
   return Object.fromEntries(select.map((el) => [el, 0]));
 };
 
+const removeUndefinedObject = (object) => {
+  Object.keys(object).forEach((key) => {
+    if (object[key] === undefined || object[key] === null) delete object[key];
+  });
+
+  return object;
+};
+
+const updateNestedObjectParser = (obj) => {
+  const final = {};
+  Object.keys(obj).forEach((i) => {
+    if (typeof obj[i] === 'object' && !Array.isArray(obj[i])) {
+      const response = updateNestedObjectParser(obj[i]);
+      Object.keys(obj[i]).forEach((j) => {
+        final[`${i}.${j}`] = response[j];
+      });
+    } else {
+      final[i] = obj[i];
+    }
+  });
+
+  return final;
+};
+
 const replacePlaceholder = (template, params) => {
   Object.keys(params).forEach((k) => {
     const placeholder = `{{${k}}}`;
@@ -29,23 +53,12 @@ const replacePlaceholder = (template, params) => {
   return template;
 };
 
-const slugify = (val) => {
-  if (!val) return '';
-  return String(val)
-    .normalize('NFKD') // split accented characters into their base characters and diacritical marks
-    .replace(/[\u0300-\u036f]/g, '') // remove all the accents, which happen to be all in the \u03xx UNICODE block.
-    .trim() // trim leading or trailing whitespace
-    .toLowerCase() // convert to lowercase
-    .replace(/[^a-z0-9 -]/g, '') // remove non-alphanumeric characters
-    .replace(/\s+/g, '-') // replace spaces with hyphens
-    .replace(/-+/g, '-'); // remove consecutive hyphens
-};
-
 module.exports = {
   convertToObjectIdMongodb,
   getInfoData,
   getSelectData,
   unGetSelectData,
   replacePlaceholder,
-  slugify,
+  removeUndefinedObject,
+  updateNestedObjectParser,
 };

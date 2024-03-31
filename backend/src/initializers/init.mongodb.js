@@ -1,9 +1,7 @@
-'use strict';
+import mongoose from 'mongoose';
+import { db } from '../configs/environment';
 
-const mongoose = require('mongoose');
-const {
-  db: { url },
-} = require('../configs/environment');
+const { url } = db;
 
 const connectString = `${url}`;
 

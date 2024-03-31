@@ -70,7 +70,7 @@ class AccessService {
       throw new BadRequestError('User blocked');
 
     const match = await comparePassword(password, foundUser.usr_password);
-    if (!match) throw new AuthFailureError('Authentication error');
+    if (!match) throw new AuthFailureError('Incorrect password');
 
     const tokens = await TokenService.createTokens(foundUser);
 

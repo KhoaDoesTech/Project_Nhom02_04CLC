@@ -5,6 +5,7 @@ const {
   getTemplate,
   createTemplate,
   findTemplateByTag,
+  getTemplates,
 } = require('../models/repositories/template.repo');
 
 class EmailService {
@@ -40,7 +41,15 @@ class EmailService {
     };
   };
 
-  // view all
+  // get all templates
+  static getTemplates = async () => {
+    const templates = await getTemplates();
+    if (!templates) throw new BadRequestError('Templates not found');
+
+    return {
+      templates,
+    };
+  };
 
   // view one
 }
