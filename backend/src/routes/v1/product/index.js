@@ -12,10 +12,21 @@ router.get(
 );
 router.get('/advanced-search', asyncHandler(ProductController.advancedSearch));
 
+router.get('/:productId', asyncHandler(ProductController.getProductById));
+router.get(
+  '/slug/:productSlug',
+  asyncHandler(ProductController.getProductBySlug)
+);
+router.get(
+  '/product_shop/:productShop',
+  asyncHandler(ProductController.getProductByShopId)
+);
+
 // Shop
 router.use(authentication);
 router.post('', asyncHandler(ProductController.createProduct));
 router.patch('/:productId', asyncHandler(ProductController.updateProduct));
+
 router.put(
   '/publish/:productId',
   asyncHandler(ProductController.publishProductByShop)
@@ -24,13 +35,7 @@ router.put(
   '/unpublish/:productId',
   asyncHandler(ProductController.unPublishProductByShop)
 );
-router.get(
-  '/unpublish/all',
-  asyncHandler(ProductController.getAllUnPublishForShop)
-);
-router.get(
-  '/publish/all',
-  asyncHandler(ProductController.getAllPublishForShop)
-);
+
+router.get('/shop/all', asyncHandler(ProductController.getAllProductForShop));
 
 module.exports = router;

@@ -20,10 +20,10 @@ class TokenService {
   };
 
   static createTokens = async (user) => {
-    const { _id: userId, usr_email: email } = user;
+    const { _id: userId, usr_email: email, usr_role: role } = user;
     const { publicKey, privateKey } = await generateKeyPair();
 
-    const tokens = await createTokenPair({ userId, email }, privateKey);
+    const tokens = await createTokenPair({ userId, email, role }, privateKey);
 
     await this.saveToken(userId, publicKey, tokens.refreshToken);
 

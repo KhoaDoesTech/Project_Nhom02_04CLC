@@ -1,6 +1,6 @@
 const QueryFeatures = require('~/utils/query.util');
 const productModel = require('../product.model');
-const { convertToObjectIdMongodb } = require('~/utils/misc');
+const { convertToObjectIdMongodb, unGetSelectData } = require('~/utils/misc');
 
 const createProduct = async (product) => {
   const newProduct = await productModel.create(product);
@@ -12,6 +12,27 @@ const updateProductById = async ({ productId, bodyUpdate, isNew = true }) => {
   return await productModel.findByIdAndUpdate(productId, bodyUpdate, {
     new: isNew,
   });
+};
+
+const findProductById = async ({ product_id, unSelect }) => {
+  return await productModel
+    .findById(product_id)
+    .select(unGetSelectData(unSelect));
+};
+
+const findProductBySlug = async ({ product_slug, unSelect }) => {
+  return await productModel
+    .findOne({ product_slug })
+    .select(unGetSelectData(unSelect));
+};
+
+const findProductsByShopId = async ({ product_shop, query }) => {
+  const condition = {
+    product_shop: convertToObjectIdMongodb(product_shop),
+    isPublished: true,
+  };
+  query = { ...query, ...condition };
+  return await advancedSearch(query);
 };
 
 const publishProductByShop = async ({ product_shop, product_id }) => {
@@ -44,22 +65,25 @@ const unPublishProductByShop = async ({ product_shop, product_id }) => {
   return modifiedCount;
 };
 
-const findAllProductForShop = async (query) => {
-  return await advancedSearch(query);
-};
-
-const searchProductByUser = async ({ keySearch }) => {
+const searchProductByUser = async ({ keySearch, queryInput }) => {
   const regexSearch = new RegExp(keySearch);
-  return await productModel
-    .find(
-      {
-        isPublished: true,
-        $text: { $search: regexSearch },
-      },
-      { score: { $meta: 'textScore' } }
-    )
-    .sort({ score: { $meta: 'textScore' } })
-    .lean();
+  const features = new QueryFeatures(
+    productModel
+      .find(
+        {
+          isPublished: true,
+          $text: { $search: regexSearch },
+        },
+        { score: { $meta: 'textScore' } }
+      )
+      .sort({ score: { $meta: 'textScore' } }),
+    queryInput
+  )
+    .filter()
+    .limitFields()
+    .paging();
+
+  return await features.query.lean();
 };
 
 const advancedSearch = async (queryInput) => {
@@ -69,7 +93,7 @@ const advancedSearch = async (queryInput) => {
     .limitFields()
     .paging();
 
-  return await features.query;
+  return await features.query.lean();
 };
 
 module.exports = {
@@ -79,5 +103,7 @@ module.exports = {
   updateProductById,
   unPublishProductByShop,
   publishProductByShop,
-  findAllProductForShop,
+  findProductById,
+  findProductsByShopId,
+  findProductBySlug,
 };

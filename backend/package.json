@@ -25,6 +25,7 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.24.1",
+    "accesscontrol": "^2.2.1",
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "colors": "^1.4.0",

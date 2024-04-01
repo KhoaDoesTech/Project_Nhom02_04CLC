@@ -44,21 +44,35 @@ class ProductController {
     }).send(res);
   };
 
-  getAllUnPublishForShop = async (req, res) => {
+  getAllProductForShop = async (req, res) => {
     new CREATED({
-      message: 'Find list unpublished success',
-      metadata: await ProductService.findAllUnPublishForShop({
+      message: 'Find list success',
+      metadata: await ProductService.getAllProductForShop({
         product_shop: req.user.userId,
         query: req.query,
       }),
     }).send(res);
   };
 
-  getAllPublishForShop = async (req, res) => {
-    new CREATED({
-      message: 'Find list published success',
-      metadata: await ProductService.findAllPublishForShop({
-        product_shop: req.user.userId,
+  getProductById = async (req, res) => {
+    new OK({
+      message: 'Search product success',
+      metadata: await ProductService.getProductById(req.params.productId),
+    }).send(res);
+  };
+
+  getProductBySlug = async (req, res) => {
+    new OK({
+      message: 'Search product success',
+      metadata: await ProductService.getProductBySlug(req.params.productSlug),
+    }).send(res);
+  };
+
+  getProductByShopId = async (req, res) => {
+    new OK({
+      message: 'Search product success',
+      metadata: await ProductService.getProductByShopId({
+        product_shop: req.params.productShop,
         query: req.query,
       }),
     }).send(res);
@@ -67,7 +81,10 @@ class ProductController {
   searchProducts = async (req, res) => {
     new OK({
       message: 'Search product success',
-      metadata: await ProductService.searchProducts(req.params),
+      metadata: await ProductService.searchProducts({
+        keySearch: req.params.keySearch,
+        query: req.query,
+      }),
     }).send(res);
   };
 

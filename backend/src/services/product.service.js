@@ -7,11 +7,16 @@ const {
   updateProductById,
   unPublishProductByShop,
   publishProductByShop,
-  findAllProductForShop,
+  findProductById,
+  findProductsByShopId,
+  findProductBySlug,
 } = require('~/models/repositories/product.repo');
+
 const {
   updateNestedObjectParser,
   removeUndefinedObject,
+  unGetSelectData,
+  convertToObjectIdMongodb,
 } = require('~/utils/misc');
 
 class ProductService {
@@ -39,20 +44,36 @@ class ProductService {
     return await unPublishProductByShop({ product_shop, product_id });
   }
 
-  static async findAllUnPublishForShop({ product_shop, query }) {
-    const condition = { product_shop, isPublished: false };
-    query = { ...query, ...condition };
-    return await findAllProductForShop(query);
+  static async getProductById(product_id) {
+    return await findProductById({
+      product_id,
+      unSelect: ['__v'],
+    });
   }
 
-  static async findAllPublishForShop({ product_shop, query }) {
-    const condition = { product_shop, isPublished: true };
-    query = { ...query, ...condition };
-    return await findAllProductForShop(query);
+  static async getProductBySlug(product_slug) {
+    return await findProductBySlug({
+      product_slug,
+      unSelect: ['__v'],
+    });
   }
 
-  static async searchProducts({ keySearch }) {
-    return await searchProductByUser({ keySearch });
+  static async getProductByShopId({ product_shop, query }) {
+    const product = await findProductsByShopId({
+      product_shop,
+      query,
+    });
+    return product;
+  }
+
+  static async getAllProductForShop({ product_shop, query }) {
+    const condition = { product_shop: convertToObjectIdMongodb(product_shop) };
+    query = { ...query, ...condition };
+    return await advancedSearch(query);
+  }
+
+  static async searchProducts({ keySearch, query }) {
+    return await searchProductByUser({ keySearch, queryInput: query });
   }
 
   static async advancedSearch(query) {
