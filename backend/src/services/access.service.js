@@ -23,8 +23,8 @@ const { generateHashedPassword, comparePassword } = require('../utils/crypto');
 const { sendTemplateEmail } = require('../utils/email');
 const { getInfoData } = require('../utils/misc');
 const { removeKeyById } = require('../models/repositories/token.repo');
-const { createOtp, validateOtp } = require('./otp.service');
-const { getOtp } = require('../models/repositories/otp.repo');
+const { createOtp, validateOtp, checkEmailToken } = require('./otp.service');
+const { getOtp, getOtpByEmail } = require('../models/repositories/otp.repo');
 const TokenService = require('./token.service');
 
 class AccessService {
@@ -64,7 +64,7 @@ class AccessService {
     if (!foundUser) throw new BadRequestError('User not registered');
 
     if (foundUser.usr_status === 'pending')
-      throw new BadRequestError("User haven't verify email");
+      throw new BadRequestError('User haven not verify email');
 
     if (foundUser.usr_status === 'block')
       throw new BadRequestError('User blocked');
@@ -91,7 +91,7 @@ class AccessService {
   static resetPassword = async ({ email, new_password, otp }) => {
     const foundUser = await findUserByEmail(email);
 
-    await validateOtp({ email, otp, type: 'reset' });
+    await validateOtp({ otp, type: 'reset' });
 
     const matched = await comparePassword(new_password, foundUser.usr_password);
     if (matched)
@@ -103,7 +103,7 @@ class AccessService {
     await updatePassword(email, passwordHash);
 
     const sentEmail = await sendTemplateEmail({ email, tag: 'success' });
-    if (!sentEmail) throw new BadRequestError("Can't send success email");
+    if (!sentEmail) throw new BadRequestError('Can not send success email');
 
     return {
       user: email,
@@ -115,12 +115,12 @@ class AccessService {
     if (!foundUser) throw new NotFoundError('User not found!');
 
     if (foundUser.usr_status === 'pending')
-      throw new BadRequestError("User haven't verify email");
+      throw new BadRequestError('User have not verify email');
 
     if (foundUser.usr_status === 'block')
       throw new BadRequestError('User blocked');
 
-    const foundOtp = await getOtp({ email, type: 'reset' });
+    const foundOtp = await getOtpByEmail({ email, type: 'reset' });
     if (foundOtp)
       throw new BadRequestError(
         'Only after one minute you can request for another otp!'
@@ -135,7 +135,7 @@ class AccessService {
       tag: 'url',
       params: { resetPasswordUrl: resetPasswordUrl },
     });
-    if (!sentEmail) throw new BadRequestError("Can't send url email");
+    if (!sentEmail) throw new BadRequestError('Can not send url email');
 
     return {
       user: email,
@@ -149,7 +149,7 @@ class AccessService {
     if (foundUser.usr_status === 'block')
       throw new BadRequestError('User blocked');
 
-    const foundOtp = await getOtp({ email, type: 'verify' });
+    const foundOtp = await getOtpByEmail({ email, type: 'verify' });
     if (foundOtp)
       throw new BadRequestError(
         'Only after one minute you can request for another otp!'
@@ -162,7 +162,7 @@ class AccessService {
       tag: 'otp',
       params: { otpCode: token },
     });
-    if (!sentEmail) throw new BadRequestError("Can't send otp email");
+    if (!sentEmail) throw new BadRequestError('Can not send otp email');
 
     return {
       user: email,
@@ -179,7 +179,7 @@ class AccessService {
     if (foundUser.usr_status === 'block')
       throw new BadRequestError('User blocked');
 
-    await validateOtp({ email, otp, type: 'verify' });
+    await validateOtp({ otp, type: 'verify' });
 
     await activeUser(email);
 
@@ -192,7 +192,7 @@ class AccessService {
         userName: foundUser.usr_name,
       },
     });
-    if (!sentEmail) throw new BadRequestError("Can't send welcome email");
+    if (!sentEmail) throw new BadRequestError('Can not send welcome email');
 
     return {
       user: getInfoData({
@@ -209,7 +209,7 @@ class AccessService {
 
     if (foundUser) {
       if (foundUser.usr_status === 'pending')
-        throw new BadRequestError("User haven't verify email");
+        throw new BadRequestError('User have not verify email');
 
       if (foundUser.usr_status === 'block')
         throw new BadRequestError('User blocked');
@@ -225,7 +225,7 @@ class AccessService {
       usr_password: passwordHash,
     });
 
-    if (!newUser) throw new BadRequestError("Can't create User");
+    if (!newUser) throw new BadRequestError('Can not create User');
 
     // Send OTP
     const token = await createOtp({ email, type: 'verify' });
@@ -234,7 +234,7 @@ class AccessService {
       tag: 'otp',
       params: { otpCode: token },
     });
-    if (!sentEmail) throw new BadRequestError("Can't send otp email");
+    if (!sentEmail) throw new BadRequestError('Can not send otp email');
 
     return {
       user: email,

@@ -10,8 +10,13 @@ const findUserById = async (userId) => {
   return await userModel.findOne({ _id: userId }).lean();
 };
 
-const createUser = async (info) => {
-  return await userModel.create(info);
+const createUser = async ({ usr_name, usr_email, usr_password, usr_role }) => {
+  return await userModel.create({
+    usr_name,
+    usr_email,
+    usr_password,
+    usr_role,
+  });
 };
 
 const updatePassword = async (email, password) => {

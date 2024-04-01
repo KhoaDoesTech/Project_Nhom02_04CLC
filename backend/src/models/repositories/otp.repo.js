@@ -1,20 +1,25 @@
 'use strict';
 
-const { generateHashedPassword } = require('../../utils/crypto');
 const otpModel = require('../otp.model');
 
 const saveOtp = async (email, otp, type) => {
-  const hashOtp = await generateHashedPassword(otp);
-
   return await otpModel.create({
     otp_email: email,
-    otp_token: hashOtp,
+    otp_token: otp,
     otp_type: type,
   });
 };
 
-const getOtp = async ({ email, type }) => {
+const getOtp = async ({ token, type }) => {
+  return await otpModel.findOne({ otp_token: token, otp_type: type }).lean();
+};
+
+const getOtpByEmail = async ({ email, type }) => {
   return await otpModel.findOne({ otp_email: email, otp_type: type }).lean();
 };
 
-module.exports = { saveOtp, getOtp };
+const deleteOtp = async (token) => {
+  return await otpModel.deleteOne({ otp_token: token });
+};
+
+module.exports = { saveOtp, getOtp, deleteOtp, getOtpByEmail };

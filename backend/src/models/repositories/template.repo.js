@@ -18,7 +18,7 @@ const createTemplate = async ({
   });
 };
 
-const getTemplate = async (tem_name) => {
+const getTemplateByName = async (tem_name) => {
   return await templateModel.findOne({ tem_name });
 };
 // get all templates
@@ -32,7 +32,7 @@ const findTemplateByTag = async (tem_tag) => {
 
 module.exports = {
   createTemplate,
-  getTemplate,
+  getTemplateByName,
   findTemplateByTag,
   getTemplates,
 };

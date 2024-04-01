@@ -5,7 +5,7 @@ const {
   getTemplate,
   createTemplate,
   findTemplateByTag,
-  getTemplates,
+  getTemplateByName,
 } = require('../models/repositories/template.repo');
 
 class EmailService {
@@ -34,7 +34,7 @@ class EmailService {
       tem_tag,
       tem_status,
     });
-    if (!newTemplate) throw new BadRequestError("Can't create template");
+    if (!newTemplate) throw new BadRequestError('Can not create template');
 
     return {
       template: newTemplate,
@@ -42,13 +42,11 @@ class EmailService {
   };
 
   // get all templates
-  static getTemplates = async () => {
-    const templates = await getTemplates();
-    if (!templates) throw new BadRequestError('Templates not found');
+  static getTemplate = async ({ tem_name }) => {
+    const template = await getTemplateByName(tem_name);
+    if (!template) throw new BadRequestError('Templates not found');
 
-    return {
-      templates,
-    };
+    return template;
   };
 
   // view one
