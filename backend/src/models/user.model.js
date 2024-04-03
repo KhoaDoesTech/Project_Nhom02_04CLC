@@ -1,7 +1,6 @@
 'use strict';
 
 const { model, Schema } = require('mongoose');
-const { required } = require('nodemon/lib/config');
 
 const DOCUMENT_NAME = 'User';
 const COLLECTION_NAME = 'Users';
@@ -31,6 +30,8 @@ const userSchema = new Schema(
     collection: COLLECTION_NAME,
   }
 );
+
+userSchema.index({ usr_email: 'text', usr_phone: 'text', usr_name: 'text' });
 
 //Export the model
 module.exports = model(DOCUMENT_NAME, userSchema);

@@ -23,8 +23,8 @@ const { generateHashedPassword, comparePassword } = require('../utils/crypto');
 const { sendTemplateEmail } = require('../utils/email');
 const { getInfoData } = require('../utils/misc');
 const { removeKeyById } = require('../models/repositories/token.repo');
-const { createOtp, validateOtp, checkEmailToken } = require('./otp.service');
-const { getOtp, getOtpByEmail } = require('../models/repositories/otp.repo');
+const { createOtp, validateOtp } = require('./otp.service');
+const { getOtpByEmail } = require('../models/repositories/otp.repo');
 const TokenService = require('./token.service');
 
 class AccessService {

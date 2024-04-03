@@ -1,9 +1,29 @@
 'use strict';
 
+const QueryFeatures = require('~/utils/query.util');
 const userModel = require('../user.model');
 
 const findUserByEmail = async (email) => {
   return await userModel.findOne({ usr_email: email }).lean();
+};
+
+const findUserByKeysearch = async (keySearch) => {
+  const regexSearch = new RegExp(keySearch);
+  const features = new QueryFeatures(
+    userModel
+      .find(
+        {
+          $text: { $search: regexSearch },
+        },
+        { score: { $meta: 'textScore' } }
+      )
+      .sort({ score: { $meta: 'textScore' } })
+  )
+    .filter()
+    .limitFields()
+    .paging();
+
+  return await features.query.lean();
 };
 
 const findUserById = async (userId) => {
@@ -51,4 +71,5 @@ module.exports = {
   createUser,
   activeUser,
   updatePassword,
+  findUserByKeysearch,
 };
