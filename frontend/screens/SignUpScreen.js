@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { SafeAreaView, StyleSheet, Modal, View, Text, Pressable, Image } from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import InputField from "../components/temp/InputField.js";
-import ButtonLogin from "../components/temp/Button1.js";
+import InputField from "../components/Auth/InputField.js";
+import ButtonLogin from "../components/Auth/components/Button.js";
 import HomeScreen from "./HomeScreen.js";
 export default function SignUpScreen({ navigation }) {
 

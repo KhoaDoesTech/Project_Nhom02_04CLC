@@ -1,53 +1,130 @@
-import { SafeAreaView, Text, StyleSheet, Pressable } from "react-native";
-
+import { useState } from "react";
+import { SafeAreaView, Text, StyleSheet, Pressable, View } from "react-native";
+import { useNavigation } from '@react-navigation/native';
 import HomeIcon from "../icons/HomeIcon";
 import ProductIcon from "../icons/ProductIcon";
 import MapIcon from "../icons/MapIcon";
 import MessageIcon from "../icons/MessageIcon";
+import AddIcon from "../icons/AddIcon";
 
 export default function Footer() {
+    const navigation = useNavigation();
+    const [home, setHome] = useState(true);
+    const [product, setProduct] = useState(false);
+    const [map, setMap] = useState(false);
+    const [message, setMessage] = useState(false);
+
+    function openHome() {
+        setHome(true);
+        setProduct(false);
+        setMap(false);
+        setMessage(false);
+        navigation.navigate('Home');
+    }
+
+    function openProduct() {
+        setHome(false);
+        setProduct(true);
+        setMap(false);
+        setMessage(false);
+        navigation.navigate('Product');
+    }
+
+    function openMap() {
+        setHome(false);
+        setProduct(false);
+        setMap(true);
+        setMessage(false);
+        navigation.navigate('Map');
+    }
+
+    function openMessage() {
+        setHome(false);
+        setProduct(false);
+        setMap(false);
+        setMessage(true);
+        navigation.navigate('Message');
+    }
+
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <Pressable style={styles.addBtn}>
-                <Text>+</Text>
+                <AddIcon />
             </Pressable>
-            <SafeAreaView style={styles.itemContainer}>
-                <Pressable style={styles.item}>
-                    <HomeIcon />
-                    <Text>Home</Text>
+            <View style={styles.itemContainer}>
+                <Pressable style={styles.item} onPress={openHome}>
+                    <HomeIcon color={home ? '#38A59F' : '#858585'} />
+                    <Text
+                        style={
+                            home
+                                ? [styles.text, styles.isClicked]
+                                : [styles.text, styles.isNotClicked]
+                        }
+                    >
+                        Home
+                    </Text>
                 </Pressable>
-                <Pressable style={styles.item}>
-                    <ProductIcon />
-                    <Text>Product</Text>
+                <Pressable style={styles.item} onPress={openProduct}>
+                    <ProductIcon color={product ? '#38A59F' : '#858585'} />
+                    <Text
+                        style={
+                            product
+                                ? [styles.text, styles.isClicked]
+                                : [styles.text, styles.isNotClicked]
+                        }
+                    >
+                        Product
+                    </Text>
                 </Pressable>
-                <Pressable style={styles.item}>
-                    <MapIcon />
-                    <Text>Map</Text>
+
+                <View style={{ marginHorizontal: 10 }}></View>
+
+                <Pressable style={styles.item} onPress={openMap}>
+                    <MapIcon width={28} height={28} color={map ? '#38A59F' : '#858585'} />
+                    <Text
+                        style={
+                            map
+                                ? [styles.text, styles.isClicked]
+                                : [styles.text, styles.isNotClicked]
+                        }
+                    >
+                        Map
+                    </Text>
                 </Pressable>
-                <Pressable style={styles.item}>
-                    <MessageIcon />
-                    <Text>message</Text>
+                <Pressable style={styles.item} onPress={openMessage}>
+                    <MessageIcon color={message ? '#38A59F' : '#858585'} />
+                    <Text
+                        style={
+                            message
+                                ? [styles.text, styles.isClicked]
+                                : [styles.text, styles.isNotClicked]
+                        }
+                    >
+                        message
+                    </Text>
                 </Pressable>
-            </SafeAreaView>
-        </SafeAreaView>
+            </View>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
-
     container: {
-        alignItems: 'center',
+        alignItems: "center",
+        width: "100%",
+
     },
     itemContainer: {
-        left: 0,
+        flex: 1,
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
         width: "100%",
-        height: 100,
+        height: 90,
         paddingHorizontal: 24,
         borderTopWidth: 0.1,
         elevation: 2,
+        backgroundColor: '#fff'
         // backgroundColor: "blue",
     },
 
@@ -55,15 +132,27 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
 
+    text: {
+        fontWeight: "600",
+    },
+
+    isClicked: {
+        color: "#38A59F",
+    },
+
+    isNotClicked: {
+        color: "#858585",
+    },
+
     addBtn: {
-        justifyContent: 'center',
-        alignItems: 'center',
+        paddingTop: 6,
+        paddingLeft: 4,
         height: 59,
         width: 59,
-        backgroundColor: '#38A59F',
+        backgroundColor: "#38A59F",
         borderRadius: 100,
         marginBottom: -30,
-        elevation: 2,
-        zIndex: 9999
-    }
+        elevation: 5,
+        zIndex: 9999,
+    },
 });

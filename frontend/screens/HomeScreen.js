@@ -1,98 +1,129 @@
-import { StatusBar } from 'expo-status-bar';
+import { StatusBar } from "expo-status-bar";
 
-import axios from 'axios';
-import React, { useEffect, useState, useContext } from 'react';
-import { Text, SafeAreaView, Image, ScrollView, Dimensions } from 'react-native';
-// import { AuthContext } from '../store/auth-context';
-import * as styles from '../styles';
-import SearchPressable from '../components/HeaderButton/SearchButton';
-import NotificationPressable from '../components/HeaderButton/NotificationButton';
-import MorePressable from '../components/HeaderButton/MoreButton';
+import React, { useEffect, useState, useContext } from "react";
+import {
+  Text,
+  SafeAreaView,
+  Image,
+  ScrollView,
+  FlatList,
+  View,
+  StyleSheet,
+} from "react-native";
+import { Feather } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
-import ShirtCategory from '../components/Categories/ShirtCategory';
-import TshirtCategory from '../components/Categories/TshirtCategory';
-import JacketCategory from '../components/Categories/JacketCategory';
-import BlouseCategory from '../components/Categories/BlouseCategory';
-import DressCategory from '../components/Categories/DressCategory';
-import ShortsCategory from '../components/Categories/ShortsCategory';
-import PantsCategory from '../components/Categories/PantsCategory';
-import SkirtCategory from '../components/Categories/SkirtCategory';
-import SweaterCategory from '../components/Categories/SweaterCategory';
-import JeansCategory from '../components/Categories/JeansCategory';
+import AcquisitionItem from "../components/AcquisitionItem/index.js";
+import CategoryItem from "../components/CategoryItem/index.js";
+import HeaderButton from "../components/HeaderButton/index.js";
 
-import FilterAcquisition from '../components/Acquisition/FilterAcquisition';
-import DistanceAcquisition from '../components/Acquisition/DistanceAcquisition';
-import FreeAcquisition from '../components/Acquisition/FreeAcquisition';
-import BuyAcquisition from '../components/Acquisition/BuyAcquisition';
-import BorrowAcquisition from '../components/Acquisition/BorrowAcquisition';
-import RentAcquisition from '../components/Acquisition/RentAcquisition';
+import Product from "../components/Item/Product.js";
+import Footer from "../components/footer/Footer.js";
 
-import Footer from '../components/footer/Footer.js';
-
-function HomeScreen() {
-  const [fetchedMessage, setFetchedMesssage] = useState('');
-
-  // const authCtx = useContext(AuthContext);
-  // const token = authCtx.token;
-
-  // useEffect(() => {
-  //   axios
-  //     .get(
-  //       'https://react-native-course-3cceb-default-rtdb.firebaseio.com/message.json?auth=' +
-  //       token
-  //     )
-  //     .then((response) => {
-  //       setFetchedMesssage(response.data);
-  //     });
-  // }, [token]);
-
-  // Lấy kích thước màn hình
-  const screenWidth = Dimensions.get('window').width;
-  const screenHeight = Dimensions.get('window').height;
-
+export default function HomeScreen({ navigation }) {
+  function openDrawerHandler() {
+    navigation.openDrawer()
+  }
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <SafeAreaView>
-        <Image
-          source={require('../assets/images/logo.png')}
-          style={{ width: 248, height: 47, position: 'absolute', top: 50 }}
-        />
+    <View style={{ flex: 1 }}>
+      <View style={{ height: "25%", zIndex: 9999, backgroundColor: '#fff' }}>
+        <SafeAreaView style={styles.header}>
+          <Image
+            source={require("../assets/images/logo.png")}
+          />
 
-        <SearchPressable />
-        <NotificationPressable />
-        <MorePressable />
-      </SafeAreaView>
+          <View style={styles.headerAction}>
+            <HeaderButton
+              icon={<Feather name="search" size={30} color="black" />}
+            />
+            <HeaderButton
+              icon={<Ionicons name="notifications" size={30} color="black" />}
+            />
+            <HeaderButton
+              icon={<Ionicons name="reorder-three" size={30} color="black" />}
+              onPress={openDrawerHandler}
+            />
+          </View>
+        </SafeAreaView>
+        <SafeAreaView style={{}}>
+          <SafeAreaView style={styles.acquisitionStyles}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              <AcquisitionItem children="Shirt" />
+              <AcquisitionItem children="Tshirt" />
+              <AcquisitionItem children="Jacket" />
+              <AcquisitionItem children="Blouse" />
+              <AcquisitionItem children="Dress" />
+              <AcquisitionItem children="Shorts" />
+              <AcquisitionItem children="Pants" />
+              <AcquisitionItem children="Skirt" />
+              <AcquisitionItem children="Sweater" />
+              <AcquisitionItem children="Jeans" />
+            </ScrollView>
+          </SafeAreaView>
 
-      <SafeAreaView style={styles.categoriesStyles.view}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} >
-          <ShirtCategory />
-          <TshirtCategory />
-          <JacketCategory />
-          <BlouseCategory />
-          <DressCategory />
-          <ShortsCategory />
-          <PantsCategory />
-          <SkirtCategory />
-          <SweaterCategory />
-          <JeansCategory />
-        </ScrollView>
-      </SafeAreaView>
+          <SafeAreaView style={styles.categoriesStyles}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              <CategoryItem children="Filter" />
+              <CategoryItem children="Distance" />
+              <CategoryItem children="Free" />
+              <CategoryItem children="Buy" />
+              <CategoryItem children="Borrow" />
+              <CategoryItem children="Rent" />
+            </ScrollView>
+          </SafeAreaView>
+        </SafeAreaView>
+      </View>
 
-      <SafeAreaView style={styles.acquisitionStyles.view}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} >
-          <FilterAcquisition />
-          <DistanceAcquisition />
-          <FreeAcquisition />
-          <BuyAcquisition />
-          <BorrowAcquisition />
-          <RentAcquisition />
-        </ScrollView>
-      </SafeAreaView>
+      <ScrollView style={styles.listItem}>
+        <Product onPress={() => navigation.navigate('ProductDetail')} />
+        <Product onPress={() => navigation.navigate('ProductDetail')} />
+        <Product onPress={() => navigation.navigate('ProductDetail')} />
+        <Product onPress={() => navigation.navigate('ProductDetail')} />
+        <Product onPress={() => navigation.navigate('ProductDetail')} />
+      </ScrollView>
 
-      <SafeAreaView style={{ position: 'absolute', bottom: -15 }}>
+      <SafeAreaView style={{ position: "absolute", bottom: -39 }}>
         <Footer />
       </SafeAreaView>
-    </SafeAreaView>
+    </View>
   );
 }
-export default HomeScreen;
+
+const styles = StyleSheet.create({
+  listItem: {
+    flex: 0,
+    marginTop: 20,
+    marginBottom: 70,
+    marginHorizontal: 24,
+    height: "55%",
+    overflow: "hiden",
+  },
+  categoriesStyles: {
+    marginTop: 25,
+    marginLeft: 10,
+    marginRight: 10,
+    justify: "center",
+    flexDirection: "row",
+  },
+
+  acquisitionStyles: {
+    marginTop: 20,
+    marginLeft: 10,
+    marginRight: 10,
+    justify: "center",
+    flexDirection: "row",
+  },
+  header: {
+    flex: 4,
+    marginTop: 30,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  headerAction: {
+
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingRight: 10
+
+  }
+});

@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { color } from 'react-native-tailwindcss';
 
 export const Colors = {
   primary100: '#f9beda',
@@ -14,7 +15,7 @@ export const categoriesStyles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     justify: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
   }
 });
 
@@ -28,6 +29,17 @@ export const acquisitionStyles = StyleSheet.create({
   }
 });
 
+export const itemStyles = StyleSheet.create({
+  view: {
+    flex: 0,
+    marginTop: 20,
+    marginBottom: 75,
+    marginHorizontal: 24,
+    height: '55%',
+    overflow: 'hiden',
+  }
+});
+
 export const unSelectedCategoryStyles = StyleSheet.create({
   text: {
     fontWeight: 'bold',
@@ -38,34 +50,15 @@ export const unSelectedCategoryStyles = StyleSheet.create({
 });
 
 export const selectedCategoryStyles = StyleSheet.create({
-   text: {
-     fontWeight: 'bold',
-     marginLeft: 10,
-     fontSize: 20,
-     borderBottomWidth: 4,
-   }
+  text: {
+    fontWeight: 'bold',
+    marginLeft: 10,
+    fontSize: 20,
+    borderBottomWidth: 4,
+  }
 });
 
-export const grayBackgroundStyles = StyleSheet.create({
-  button: {
-    marginLeft: 10,
-    flexDirection: 'row',
-    paddingLeft: 12,
-    paddingRight: 12,
-    paddingTop: 6,
-    paddingBottom: 6,
-    alignItems: 'center',
-    backgroundColor: '#A6A6A6',
-    justifyContent: 'center',
-    borderRadius: 20,
-  },
-  text: {
-    marginHorizontal: 4,
-    fontWeight: 'bold',
-    fontSize: 16,
-    color: 'white',
-  },
-});
+
 
 export const blueBackgroundStyles = StyleSheet.create({
   button: {
