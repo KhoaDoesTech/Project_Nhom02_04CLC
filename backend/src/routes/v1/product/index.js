@@ -2,8 +2,9 @@
 
 const express = require('express');
 const ProductController = require('../../../controllers/product.controller');
-const asyncHandler = require('../../../middleware/async.middleware');
-const { authentication } = require('../../../middleware/auth.middleware');
+import asyncHandler from '~/middleware/async.middleware';
+import authentication from '~/middleware/auth.middleware';
+
 const router = express.Router();
 
 router.get(

@@ -19,7 +19,8 @@ class CartService {
    * @param {Object} [options.product={}] - The product to be added to the cart.
    * @returns {Promise} A promise that resolves to the updated cart.
    */
-  static async addToCart({ userId, product = {} }) {
+  static async addToCart({ userId, productInfo = {} }) {
+    const { product } = productInfo;
     // check cart exist
     const foundCart = await findCartById(userId);
 
@@ -62,7 +63,8 @@ class CartService {
       }
     ]
   */
-  static async addToCartV2({ userId, shop_order_ids = {} }) {
+  static async addToCartV2({ userId, shopOrder = {} }) {
+    const { shop_order_ids } = shopOrder;
     const { productId, quantity, old_quantity } =
       shop_order_ids[0]?.item_products[0] ?? {};
 
@@ -74,6 +76,7 @@ class CartService {
 
     if (quantity === 0) {
       // deleted
+
       return await deleteUserCart({ userId, productId });
     }
 

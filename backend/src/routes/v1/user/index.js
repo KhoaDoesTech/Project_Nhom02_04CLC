@@ -2,7 +2,8 @@
 
 const express = require('express');
 const UserController = require('~/controllers/user.controller');
-const asyncHandler = require('~/middleware/async.middleware');
+import asyncHandler from '~/middleware/async.middleware';
+import authentication from '~/middleware/auth.middleware';
 const { grantAccess } = require('~/middleware/rbac.middleware');
 const router = express.Router();
 

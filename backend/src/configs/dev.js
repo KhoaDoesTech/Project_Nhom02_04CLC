@@ -1,7 +1,7 @@
 module.exports = {
   env: process.env.NODE_ENV,
   app: {
-    port: 8081,
+    port: 3000,
     url: 'http://localhost:8081/',
   },
   db: {

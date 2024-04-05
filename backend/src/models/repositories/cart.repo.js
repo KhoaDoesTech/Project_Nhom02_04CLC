@@ -19,6 +19,7 @@ const createUserCart = async ({ userId, product }) => {
 
 const updateUserCartQuantity = async ({ userId, product }) => {
   const { productId, quantity } = product;
+
   const query = {
       cart_user_id: convertToObjectIdMongodb(userId),
       'cart_products.productId': productId,
