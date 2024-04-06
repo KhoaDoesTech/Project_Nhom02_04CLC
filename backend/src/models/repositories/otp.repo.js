@@ -11,7 +11,7 @@ const saveOtp = async (email, otp, type) => {
 };
 
 const getOtp = async ({ token, type }) => {
-  return await otpModel.findOne({ otp_token: token, otp_type: type }).lean();
+  return await otpModel.findOne({ otp_token: token, otp_type: type });
 };
 
 const getOtpByEmail = async ({ email, type }) => {

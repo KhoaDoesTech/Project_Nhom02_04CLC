@@ -91,7 +91,7 @@ class AccessService {
   static resetPassword = async ({ email, new_password, otp }) => {
     const foundUser = await findUserByEmail(email);
 
-    await validateOtp({ otp, type: 'reset' });
+    await validateOtp({ token: otp, type: 'reset' });
 
     const matched = await comparePassword(new_password, foundUser.usr_password);
     if (matched)
@@ -179,7 +179,7 @@ class AccessService {
     if (foundUser.usr_status === 'block')
       throw new BadRequestError('User blocked');
 
-    await validateOtp({ otp, type: 'verify' });
+    await validateOtp({ token: otp, type: 'verify' });
 
     await activeUser(email);
 

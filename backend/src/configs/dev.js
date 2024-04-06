@@ -13,4 +13,13 @@ module.exports = {
     user: process.env.DEV_MAILER_USER,
     pass: process.env.DEV_MAILER_PASS,
   },
+  paypal: {
+    url: process.env.DEV_PAYPAL_URL,
+    clientId: process.env.DEV_PAYPAL_CLIENT_ID,
+    clientSecret: process.env.DEV_PAYPAL_CLIENT_SECRET,
+  },
+  discord: {
+    token: process.env.DISCORD_TOKEN,
+    channelId: process.env.DISCORD_CHANNEL_ID,
+  },
 };
