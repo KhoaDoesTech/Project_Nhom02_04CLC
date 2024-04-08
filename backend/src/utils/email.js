@@ -9,6 +9,7 @@ const sendEmail = ({ html, toEmail, subject, attachments = [] }) => {
   try {
     const mailOptions = {
       from: '"ShareAndCare" <shareandcareteam@hotmail.com>',
+      // from: '"ShareAndCare" <shareandcaret@gmail.com>',
       to: toEmail,
       subject,
       html,

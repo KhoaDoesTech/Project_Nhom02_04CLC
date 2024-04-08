@@ -15,7 +15,7 @@ const otpSchema = new Schema(
       default: 'verify',
       enum: ['verify', 'reset', 'login'],
     },
-    expireAt: { type: Date, default: Date.now, expires: 60 }, // 60 seconds
+    expireAt: { type: Date, default: Date.now, expires: 3 * 60 }, // 3 minutes
   },
   {
     timestamps: true,

@@ -2,21 +2,21 @@
 
 const { BadRequestError } = require('../helpers/error.response');
 const {
-  getTemplate,
   createTemplate,
   findTemplateByTag,
-  getTemplateByName,
+  findTemplateByName,
 } = require('../models/repositories/template.repo');
+const welcomeTemplate = require('~/templates/welcome.template');
 
 class EmailService {
   static addTemplate = async ({
     tem_name,
-    tem_html,
+    tem_html = welcomeTemplate,
     tem_subject,
     tem_tag = 'marketing',
     tem_status = true,
   }) => {
-    const foundTemplate = await getTemplate(tem_name);
+    const foundTemplate = await findTemplateByName(tem_name);
     if (foundTemplate) throw new BadRequestError('Template name has used');
 
     const tag = ['otp', 'success', 'url', 'welcome', 'marketing'];
@@ -43,7 +43,7 @@ class EmailService {
 
   // get all templates
   static getTemplate = async ({ tem_name }) => {
-    const template = await getTemplateByName(tem_name);
+    const template = await findTemplateByName(tem_name);
     if (!template) throw new BadRequestError('Templates not found');
 
     return template;
