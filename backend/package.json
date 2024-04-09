@@ -25,6 +25,7 @@
     "ShareAndCare"
   ],
   "dependencies": {
+    "@aws-sdk/client-ses": "^3.549.0",
     "@babel/runtime": "^7.24.1",
     "accesscontrol": "^2.2.1",
     "axios": "^1.6.8",

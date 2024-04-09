@@ -1,6 +1,5 @@
 'use strict';
 
-const { query } = require('express');
 const { OK } = require('../helpers/success.response');
 const CommentService = require('../services/comment.service');
 

@@ -12,6 +12,11 @@ module.exports = {
     port: 2525,
     user: process.env.DEV_MAILER_USER,
     pass: process.env.DEV_MAILER_PASS,
+    sender: process.env.DEV_MAILER_SENDER,
+  },
+  mailerV2: {
+    user: process.env.DEV_MAILER_V2_USER,
+    pass: process.env.DEV_MAILER_V2_PASS,
   },
   paypal: {
     url: process.env.DEV_PAYPAL_URL,

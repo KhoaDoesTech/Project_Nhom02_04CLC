@@ -9,7 +9,6 @@ const findAllDiscountCode = async ({ select, queryInput }) => {
     discountModel.sort({ _id: 1 }).select(select),
     queryInput
   )
-    .filter()
     .limitFields()
     .paging();
 
