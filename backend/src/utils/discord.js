@@ -1,7 +1,7 @@
 'use strict';
 
 const { Client, GatewayIntentBits } = require('discord.js');
-import { discord } from '../configs/environment';
+const { discord } = require('../configs/environment');
 
 class DiscordLogger {
   constructor() {

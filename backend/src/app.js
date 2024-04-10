@@ -1,4 +1,3 @@
-import 'dotenv/config';
 // require('dotenv').config();
 const compression = require('compression');
 const cors = require('cors');
@@ -8,10 +7,10 @@ const morgan = require('morgan');
 const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
-import asyncHandler from './middleware/async.middleware';
-import errorHandler from './middleware/error.middleware';
-import { NotFoundError } from './helpers/error.response';
-import corsOptions from './configs/config.cors';
+const asyncHandler = require('./middleware/async.middleware');
+const errorHandler = require('./middleware/error.middleware');
+const { NotFoundError } = require('./helpers/error.response');
+const corsOptions = require('./configs/config.cors');
 
 const app = express();
 

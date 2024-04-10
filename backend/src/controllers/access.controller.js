@@ -1,7 +1,7 @@
 'use strict';
 
-import { CREATED, OK } from '../helpers/success.response';
-import AccessService from '../services/access.service';
+const { CREATED, OK } = require('../helpers/success.response');
+const AccessService = require('../services/access.service');
 
 class AccessController {
   refreshToken = async (req, res, next) => {

@@ -1,16 +1,13 @@
 'use strict';
-
 const express = require('express');
-const UserController = require('~/controllers/user.controller');
+const UploadController = require('~/controllers/upload.controller');
 const asyncHandler = require('~/middleware/async.middleware');
 const authentication = require('~/middleware/auth.middleware');
-const { grantAccess } = require('~/middleware/rbac.middleware');
+
 const router = express.Router();
 
-// Shop
-router.get(
-  '/search/:keySearch',
-  asyncHandler(UserController.searchUserByKeySearch)
-);
+// router.use(authentication);
+
+router.post('', asyncHandler(UploadController.uploadFile));
 
 module.exports = router;

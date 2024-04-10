@@ -1,8 +1,7 @@
 'use strict';
 
-import { CREATED, OK } from '../helpers/success.response';
-import ProductService from '../services/product.service';
-
+const { CREATED } = require('../helpers/success.response');
+const ProductService = require('../services/product.service');
 class ProductController {
   createProduct = async (req, res) => {
     new CREATED({

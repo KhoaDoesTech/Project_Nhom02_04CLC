@@ -27,4 +27,9 @@ module.exports = {
     token: process.env.DISCORD_TOKEN,
     channelId: process.env.DISCORD_CHANNEL_ID,
   },
+  cloud: {
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+  },
 };

@@ -1,9 +1,9 @@
 'use strict';
 
 /* eslint-disable no-unused-vars */
-import { StatusCodes } from 'http-status-codes';
+const { StatusCodes } = require('http-status-codes');
 const Logger = require('~/utils/discord');
-import { env } from '~/configs/environment';
+const { env } = require('~/configs/environment');
 
 const errorHandler = (err, req, res, next) => {
   const statusCode = err.status || StatusCodes.INTERNAL_SERVER_ERROR;
