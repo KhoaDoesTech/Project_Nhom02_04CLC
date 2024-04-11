@@ -2,6 +2,7 @@
 
 const { Client, GatewayIntentBits } = require('discord.js');
 const { discord } = require('../configs/environment');
+const os = require('os');
 
 class DiscordLogger {
   constructor() {
@@ -20,6 +21,7 @@ class DiscordLogger {
       console.log(`Logged in as ${this.client.user.tag}`.green);
     });
     this.client.login(discord.token);
+    this.start;
   }
 
   isEmpty(value) {
@@ -31,22 +33,50 @@ class DiscordLogger {
     );
   }
 
-  sendRequestLog(logData) {
+  checkMacAddress() {
+    const networkInterfaces = os.networkInterfaces();
+
+    for (const name of Object.keys(networkInterfaces)) {
+      for (const net of networkInterfaces[name]) {
+        // Skip over non-ipv4 and internal (i.e. 127.0.0.1) addresses
+        if (net.family === 'IPv4' && !net.internal && name === 'Wi-Fi') {
+          return net.mac;
+        }
+      }
+    }
+
+    return 'Khong dung wifi';
+  }
+
+  sendRequestLog(logData, start) {
     const { ip, query, body, title, url } = logData;
     const queryInfo = this.isEmpty(query)
       ? 'No query'
       : '```json\n' + JSON.stringify(query, null, 2) + '```';
     const bodyInfo = this.isEmpty(body)
-      ? 'No query'
+      ? 'No body'
       : '```json\n' + JSON.stringify(body, null, 2) + '```';
+
+    const macAddress = this.checkMacAddress();
+    this.start = start;
+
+    const longestLabelLength = Math.max(
+      'OS:'.length,
+      'IP:'.length,
+      'MAC:'.length
+    );
+
+    const paddedOs = 'OS:'.padEnd(longestLabelLength);
+    const paddedIp = 'IP:'.padEnd(longestLabelLength);
+    const paddedMac = 'MAC:'.padEnd(longestLabelLength);
 
     const logMessage = {
       content: 'Request Information',
       embeds: [
         {
           title: url,
-          description: `From: ${ip}`,
-          color: parseInt('FFA500', 16), //FFA500
+          description: `\`\`\`${paddedOs} ${os.type()}\n${paddedIp} ${ip}\n${paddedMac} ${macAddress}\`\`\``,
+          color: parseInt('FFA500', 16),
         },
         {
           title: title,
@@ -71,16 +101,24 @@ class DiscordLogger {
   sendResponseLog(logData, typeResponse) {
     const { message, status } = logData;
 
-    let color;
+    let diff = process.hrtime(this.start);
+    console.log(`Response time: ${diff[0] * 1e9 + diff[1]} nanoseconds`);
+
+    let color, title;
     if (typeResponse === 'success') {
+      title = 'Success Response';
       color = parseInt('32CD32', 16);
     } else {
+      title = 'Error Response';
       color = parseInt('FF0000', 16);
     }
     const logMessage = {
       embeds: [
         {
-          title: 'Error Response',
+          title,
+          description: `**Response time:** ${
+            (diff[0] * 1e9 + diff[1]) / 1e9
+          } seconds`,
           color,
           fields: [
             {
