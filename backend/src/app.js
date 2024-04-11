@@ -1,4 +1,4 @@
-// require('dotenv').config();
+require('dotenv').config();
 const compression = require('compression');
 const cors = require('cors');
 const express = require('express');

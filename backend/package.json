@@ -5,7 +5,6 @@
   "author": "Do Anh Khoa <khoahoc72@gmail.com>",
   "description": "ShareAndCare API Project",
   "license": "ISC",
-  "type": "module",
   "module": "./src/server.js",
   "scripts": {
     "test": "jest",
@@ -14,8 +13,10 @@
     "build-babel": "babel ./src -d ./build/src",
     "build": "bun run clean && npm run build-babel",
     "production": "bun run build && NODE_ENV=production bun ./build/src/server.js",
-    "dev": "NODE_ENV=dev bun --env-file=.env --watch ./src/server.js",
-    "prod": "NODE_ENV=production bun --watch ./src/server.js"
+    "dev": "cross-env NODE_ENV=dev nodemon --exec babel-node ./src/server.js",
+    "prod": "cross-env NODE_ENV=production nodemon --exec babel-node ./src/server.js",
+    "bundev": "NODE_ENV=dev bun --env-file=.env --watch ./src/server.js",
+    "bunprod": "NODE_ENV=production bun --env-file=.env --watch ./src/server.js"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
   ],
   "dependencies": {
     "@aws-sdk/client-ses": "^3.549.0",
+    "@babel/runtime": "^7.24.1",
     "accesscontrol": "^2.2.1",
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
@@ -35,9 +37,11 @@
     "colors": "^1.4.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "crypto": "^1.0.1",
     "discord.js": "^14.12.1",
-    "express": "^4.18.2",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
     "express-rate-limit": "^7.2.0",
     "helmet": "^7.0.0",
     "hpp": "^0.2.3",
@@ -55,6 +59,13 @@
     "xss-clean": "^0.1.4"
   },
   "devDependencies": {
+    "@babel/cli": "^7.24.1",
+    "@babel/core": "^7.24.3",
+    "@babel/eslint-parser": "^7.24.1",
+    "@babel/node": "^7.23.9",
+    "@babel/plugin-transform-runtime": "^7.24.3",
+    "@babel/preset-env": "^7.24.3",
+    "babel-plugin-module-resolver": "^5.0.0",
     "eslint": "^8.47.0",
     "nodemon": "^3.0.1",
     "supertest": "^6.3.4",

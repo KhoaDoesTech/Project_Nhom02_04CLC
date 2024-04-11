@@ -6,7 +6,7 @@ const authentication = require('~/middleware/auth.middleware');
 
 const router = express.Router();
 
-// router.use(authentication);
+router.use(authentication);
 
 router.post('', asyncHandler(UploadController.uploadFile));
 
