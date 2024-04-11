@@ -5,7 +5,6 @@
   "author": "Do Anh Khoa <khoahoc72@gmail.com>",
   "description": "ShareAndCare API Project",
   "license": "ISC",
-  "module": "./src/server.js",
   "scripts": {
     "test": "jest",
     "lint": "eslint src --ext js --report-unused-disable-directives --max-warnings 0",
@@ -66,7 +65,7 @@
     "@babel/plugin-transform-runtime": "^7.24.3",
     "@babel/preset-env": "^7.24.3",
     "babel-plugin-module-resolver": "^5.0.0",
-    "eslint": "^8.47.0",
+    "eslint": "^9.0.0",
     "nodemon": "^3.0.1",
     "supertest": "^6.3.4",
     "@types/bun": "latest"

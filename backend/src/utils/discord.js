@@ -31,8 +31,8 @@ class DiscordLogger {
     );
   }
 
-  sendFormatLog(logData) {
-    const { ip, query, body, message, title, url, status } = logData;
+  sendRequestLog(logData) {
+    const { ip, query, body, title, url } = logData;
     const queryInfo = this.isEmpty(query)
       ? 'No query'
       : '```json\n' + JSON.stringify(query, null, 2) + '```';
@@ -41,16 +41,16 @@ class DiscordLogger {
       : '```json\n' + JSON.stringify(body, null, 2) + '```';
 
     const logMessage = {
-      content: 'Bug Report',
+      content: 'Request Information',
       embeds: [
         {
           title: url,
           description: `From: ${ip}`,
-          color: parseInt('FFA500', 16),
+          color: parseInt('32CD32', 16),
         },
         {
           title: title,
-          color: parseInt('FF0000', 16),
+          color: parseInt('FFA500', 16),
           fields: [
             {
               name: 'Body',
@@ -62,9 +62,20 @@ class DiscordLogger {
             },
           ],
         },
+      ],
+    };
+
+    this.sendMessage(logMessage);
+  }
+
+  sendErrorLog(logData) {
+    const { message, status } = logData;
+
+    const logMessage = {
+      embeds: [
         {
-          title: 'Response',
-          color: parseInt('4169E1', 16),
+          title: 'Error Response',
+          color: parseInt('FF0000', 16),
           fields: [
             {
               name: 'Status',

@@ -16,12 +16,8 @@ const errorHandler = (err, req, res, next) => {
   };
 
   if (env !== 'dev') delete responseError.stack;
-  Logger.sendFormatLog({
-    url: `URL: ${req.get('host')}${req.originalUrl}`,
-    ip: `${req.ip}`,
-    title: `Method: ${req.method}`,
-    query: req.query,
-    body: req.body,
+
+  Logger.sendErrorLog({
     status: statusCode,
     message: responseError.message,
   });
