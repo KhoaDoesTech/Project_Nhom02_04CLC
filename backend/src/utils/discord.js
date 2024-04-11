@@ -46,11 +46,11 @@ class DiscordLogger {
         {
           title: url,
           description: `From: ${ip}`,
-          color: parseInt('32CD32', 16),
+          color: parseInt('FFA500', 16), //FFA500
         },
         {
           title: title,
-          color: parseInt('FFA500', 16),
+          color: parseInt('4169E1', 16),
           fields: [
             {
               name: 'Body',
@@ -68,14 +68,20 @@ class DiscordLogger {
     this.sendMessage(logMessage);
   }
 
-  sendErrorLog(logData) {
+  sendResponseLog(logData, typeResponse) {
     const { message, status } = logData;
 
+    let color;
+    if (typeResponse === 'success') {
+      color = parseInt('32CD32', 16);
+    } else {
+      color = parseInt('FF0000', 16);
+    }
     const logMessage = {
       embeds: [
         {
           title: 'Error Response',
-          color: parseInt('FF0000', 16),
+          color,
           fields: [
             {
               name: 'Status',

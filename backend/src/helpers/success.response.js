@@ -1,5 +1,6 @@
 'use strict';
 
+const Logger = require('~/utils/discord');
 const { ReasonPhrases, StatusCodes } = require('http-status-codes');
 
 class SuccessResponse {
@@ -15,6 +16,13 @@ class SuccessResponse {
   }
 
   send(res) {
+    Logger.sendResponseLog(
+      {
+        status: this.status,
+        message: this.message,
+      },
+      'success'
+    );
     return res.status(this.status).json(this);
   }
 }

@@ -17,10 +17,13 @@ const errorHandler = (err, req, res, next) => {
 
   if (env !== 'dev') delete responseError.stack;
 
-  Logger.sendErrorLog({
-    status: statusCode,
-    message: responseError.message,
-  });
+  Logger.sendResponseLog(
+    {
+      status: statusCode,
+      message: responseError.message,
+    },
+    'error'
+  );
 
   res.status(responseError.code).json(responseError);
 };
