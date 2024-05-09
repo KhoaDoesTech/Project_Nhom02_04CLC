@@ -15,6 +15,7 @@ const mailConfig = {
   },
   tls: {
     ciphers: 'SSLv3',
+    rejectUnauthorized: false,
   },
 };
 
