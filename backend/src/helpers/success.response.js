@@ -1,6 +1,7 @@
 'use strict';
 
-import { ReasonPhrases, StatusCodes } from 'http-status-codes';
+const Logger = require('~/utils/discord');
+const { ReasonPhrases, StatusCodes } = require('http-status-codes');
 
 class SuccessResponse {
   constructor({
@@ -15,6 +16,13 @@ class SuccessResponse {
   }
 
   send(res) {
+    Logger.sendResponseLog(
+      {
+        status: this.status,
+        message: this.message,
+      },
+      'success'
+    );
     return res.status(this.status).json(this);
   }
 }

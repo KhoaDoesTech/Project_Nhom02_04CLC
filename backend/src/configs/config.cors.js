@@ -1,10 +1,14 @@
-import { WHITELIST_DOMAINS } from '../constants/index';
-import { env } from './environment';
-import { ForbiddenError } from '../helpers/error.response';
+const { WHITELIST_DOMAINS } = require('../constants/index');
+const { env } = require('./environment');
+const { ForbiddenError } = require('../helpers/error.response');
 
 const corsOptions = {
   origin: function (origin, callback) {
-    if (!origin && env === 'dev') {
+    // if (!origin && env === 'dev') {
+    //   return callback(null, true);
+    // }
+
+    if (!origin) {
       return callback(null, true);
     }
 

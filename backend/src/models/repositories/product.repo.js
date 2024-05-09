@@ -14,10 +14,15 @@ const updateProductById = async ({ productId, bodyUpdate, isNew = true }) => {
   });
 };
 
-const findProductById = async ({ product_id, unSelect }) => {
-  return await productModel
-    .findById(product_id)
-    .select(unGetSelectData(unSelect));
+const findProductById = async (
+  productId,
+  select = ['__v', 'product_quantity']
+) => {
+  return await productModel.findById(productId).select(select);
+};
+
+const checkProductExist = async (productId) => {
+  return await productModel.findById(productId);
 };
 
 const findProductBySlug = async ({ product_slug, unSelect }) => {
@@ -106,4 +111,5 @@ module.exports = {
   findProductById,
   findProductsByShopId,
   findProductBySlug,
+  checkProductExist,
 };

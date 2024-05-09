@@ -36,7 +36,7 @@ class DiscountService {
       max_uses_per_user,
     } = payload;
 
-    if (new Date() < new Date(start_date) || new Date() > new Date(end_date)) {
+    if (new Date() > new Date(end_date)) {
       throw new BadRequestError('Discount code has expired');
     }
 
@@ -44,7 +44,10 @@ class DiscountService {
       throw new BadRequestError('Start date must be before end date');
     }
 
-    const foundDiscount = await checkDiscountExists({ code, shopId });
+    const foundDiscount = await checkDiscountExists({
+      discountCode: code,
+      shopId,
+    });
     if (foundDiscount && foundDiscount.discount_is_active) {
       throw new BadRequestError('Discount exists!');
     }
@@ -73,6 +76,7 @@ class DiscountService {
 
   // Get all discount codes available with product (User)
   static async getAllDiscountCodesWithProduct({ discountCode, shopId, query }) {
+    console.log(query, discountCode, shopId);
     const foundDiscount = await checkDiscountExists({ discountCode, shopId });
 
     if (!foundDiscount || !foundDiscount.discount_is_active) {
@@ -83,7 +87,7 @@ class DiscountService {
     let products;
     // get all product
     if (discount_applies_to === 'all') {
-      findProductsByShopId({ product_shop: shopId, query });
+      products = await findProductsByShopId({ product_shop: shopId, query });
     }
 
     // get the products with ids
@@ -93,7 +97,7 @@ class DiscountService {
         isPublished: true,
       };
       query = { ...query, ...condition };
-      products = advancedSearch(query);
+      products = await advancedSearch(query);
     }
 
     return products;

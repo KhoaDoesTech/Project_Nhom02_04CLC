@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
-import { db } from '../configs/environment';
+const mongoose = require('mongoose');
+const { db } = require('../configs/environment');
 
 const { url } = db;
 

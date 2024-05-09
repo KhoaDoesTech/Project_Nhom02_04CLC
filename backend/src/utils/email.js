@@ -4,11 +4,12 @@ const transporter = require('../initializers/init.nodemailer');
 const { NotFoundError } = require('../helpers/error.response');
 const { findTemplateByTag } = require('../models/repositories/template.repo');
 const { replacePlaceholder } = require('./misc');
+const { mailer } = require('~/configs/environment');
 
 const sendEmail = ({ html, toEmail, subject, attachments = [] }) => {
   try {
     const mailOptions = {
-      from: '"ShareAndCare" <shareandcareteam@hotmail.com>',
+      from: `"ShareAndCare" <${mailer.sender}>`,
       to: toEmail,
       subject,
       html,
