@@ -1,15 +1,16 @@
 'use strict';
 
+const {
+  getProductById,
+  getProductByShopId,
+} = require('~/services/product.service');
+
 const { BadRequestError } = require('~/helpers/error.response');
 const {
   createComment,
   findCommentById,
   findCommentsByParentId,
 } = require('~/models/repositories/comment.repo');
-const {
-  findProductById,
-  checkProductExist,
-} = require('~/models/repositories/product.repo');
 
 /**
  * key features: Comment service
@@ -25,7 +26,7 @@ class CommentService {
     content,
     parentCommentId = null,
   }) {
-    const foundProduct = await findProductById(productId);
+    const foundProduct = await getProductById(productId);
     if (!foundProduct) throw new BadRequestError('Product not found');
 
     if (parentCommentId) {
@@ -51,7 +52,7 @@ class CommentService {
   }) {
     const queryInput =
       query && Object.keys(query).length ? query : { page: 0, size: 1 };
-    const foundProduct = await checkProductExist(productId);
+    const foundProduct = await getProductById(productId);
     if (!foundProduct) throw new BadRequestError('Product not found');
 
     if (parentCommentId) {

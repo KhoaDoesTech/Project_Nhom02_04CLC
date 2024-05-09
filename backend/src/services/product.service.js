@@ -45,17 +45,11 @@ class ProductService {
   }
 
   static async getProductById(product_id) {
-    return await findProductById({
-      product_id,
-      unSelect: ['__v'],
-    });
+    return await findProductById(product_id, unGetSelectData(['__v']));
   }
 
   static async getProductBySlug(product_slug) {
-    return await findProductBySlug({
-      product_slug,
-      unSelect: ['__v'],
-    });
+    return await findProductBySlug(product_slug, unGetSelectData(['__v']));
   }
 
   static async getProductByShopId({ product_shop, query }) {
