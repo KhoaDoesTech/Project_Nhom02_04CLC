@@ -92,6 +92,22 @@ const advancedSearch = async (queryInput) => {
   return await features.query.lean();
 };
 
+const checkProductByServer = async (products) => {
+  return await Promise.all(
+    products.map(async (product) => {
+      const foundProduct = await productModel.findById(product.productId);
+      console.log(foundProduct);
+      if (foundProduct) {
+        return {
+          price: foundProduct.product_price,
+          quantity: product.quantity,
+          productId: product.productId,
+        };
+      }
+    })
+  );
+};
+
 module.exports = {
   advancedSearch,
   createProduct,
@@ -102,4 +118,5 @@ module.exports = {
   findProductById,
   findProductsByShopId,
   findProductBySlug,
+  checkProductByServer,
 };

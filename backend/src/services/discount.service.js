@@ -105,13 +105,14 @@ class DiscountService {
 
   // Get all discount code of Shop (Shop)
   static async getAllDiscountCodesByShop({ shopId, query }) {
-    console.log(query);
     const unSelect = unGetSelectData(['__v', 'discount_shop_id']);
     const condition = {
       discount_shopId: convertToObjectIdMongodb(shopId),
       discount_is_active: true,
     };
     query = { ...query, ...condition };
+
+    console.log(query);
 
     const discounts = findAllDiscountCode({
       select: unSelect,
