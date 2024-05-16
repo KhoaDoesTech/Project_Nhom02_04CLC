@@ -1,57 +1,160 @@
-import { Image, SafeAreaView, StyleSheet, ScrollView, Text, Pressable, Dimensions, View, Button, Modal } from "react-native";
+import {
+    Alert,
+    Image,
+    SafeAreaView,
+    StyleSheet,
+    ScrollView,
+    Text,
+    Pressable,
+    View,
+    Button,
+    Modal,
+    RefreshControl,
+    ImageBackground
+
+} from "react-native";
 import ProductFooter from "../components/footer/ProductFooter";
 import RateIcon from "../components/icons/RateIcon";
 import RightArrowIcon from "../components/icons/RightArrowIcon";
+import LeftArrowIcon from "../components/icons/LeftArrowIcon";
 import ProductRating from "../components/Item/ProductRating";
-import { useState } from "react";
+import { useCallback, useEffect, useState, useContext } from "react";
+import { AuthContext } from "../store/auth-context";
+import { getProductById } from "../API/Product";
+import { useNavigation } from "@react-navigation/native";
+import { formatCurrency } from "../util/common";
+import { addToCart } from "../API/cart";
+import Toast from "react-native-toast-message";
 
-export default function ProductDetailScreen({ navigation }) {
-    const windowHeight = Dimensions.get('window').height;
-    const [opacity, setOpacity] = useState(1);
+export default function ProductDetailScreen({ route }) {
+    const { source, id, image, name, price, attributes, description, rating } =
+        route.params;
+
+    const navigation = useNavigation();
+    const authCtx = useContext(AuthContext);
+
+    const [refreshing, setRefreshing] = useState(false);
+    const [productDetail, setProductDetail] = useState();
+
+    const onRefresh = useCallback(async () => {
+        setRefreshing(true);
+        try {
+            const product = await getProductById(id);
+            setProductDetail(product);
+        } catch (error) {
+        } finally {
+            setRefreshing(false);
+        }
+    }, [id]);
+
     const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
     const handleOpenBottomSheet = () => {
         setIsBottomSheetOpen(true);
-        setOpacity(0.5);
     };
 
     const handleCloseBottomSheet = () => {
         setIsBottomSheetOpen(false);
-        setOpacity(1);
     };
+
+    const itemTextWithoutFontWeight = {
+        ...styles.itemText,
+        fontWeight: undefined,
+    };
+
+    const handleAddToCart = async () => {
+        try {
+            const userId = authCtx.userInfo.userId;
+            const accessToken = authCtx.token;
+            const data = {
+                product: {
+                    productId: productDetail?._id,
+                    quantity: 1,
+                    productName: productDetail?.product_name,
+                    image: productDetail.product_thumb,
+                    price: productDetail.product_price
+                }
+            };
+            await addToCart(data, userId, accessToken);
+            Toast.show({
+                type: 'success',
+                text1: 'Add to cart successfully'
+            });
+        } catch (error) {
+            Toast.show({
+                type: 'error',
+                text1: 'Failed to add to cart',
+                text2: error.message || 'An error occurred'
+            });
+        }
+    };
+
+    useEffect(() => {
+        async function fetchProductDetail() {
+            try {
+                const product = await getProductById(id);
+                setProductDetail(product);
+            } catch (error) {
+            }
+        }
+        fetchProductDetail();
+    }, [id]);
+
     return (
-        <SafeAreaView style={{ flex: 1, opacity}}>
-            <ScrollView style={styles.itemStyles}>
-                <Image style={styles.image} source={require('../assets/images/image2_.png')}/>
+        <View style={{ flex: 1 }}>
 
-                <SafeAreaView style={styles.imageContainer}>
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false} >
-                        <Image style={styles.otherImage} source={require('../assets/images/image1.png')}/>
-                        <Image style={styles.otherImage} source={require('../assets/images/image2.png')}/>
-                        <Image style={styles.otherImage} source={require('../assets/images/image3.png')}/>
-                        <Image style={styles.otherImage} source={require('../assets/images/image4.png')}/>
-                        <Image style={styles.otherImage} source={require('../assets/images/image5.png')}/>
+            <ScrollView
+                style={{ flex: 1, marginBottom: 50 }}
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+            >
+                <SafeAreaView style={{ width: "100%" }}>
+                    <ImageBackground
+                        source={{ uri: productDetail?.product_thumb }}
+                        resizeMode="cover"
+                        style={styles.image}
+                    >
+                        <Pressable
+                            style={{ minHeight: 350, marginTop: 50, marginLeft: 20, backgroundColor: 'transparent' }}
+                            onPress={() =>
+                                navigation.goBack()
+                            }
+                        >
+                            <LeftArrowIcon />
+                        </Pressable>
+                    </ImageBackground>
+                </SafeAreaView>
+
+
+
+                <View style={styles.imageContainer}>
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                        <Image style={styles.otherImage} source={require("../assets/images/image1.png")} />
+                        <Image style={styles.otherImage} source={require("../assets/images/image2.png")} />
+                        <Image style={styles.otherImage} source={require("../assets/images/image3.png")} />
+                        <Image style={styles.otherImage} source={require("../assets/images/image4.png")} />
+                        <Image style={styles.otherImage} source={require("../assets/images/image5.png")} />
                     </ScrollView>
-                </SafeAreaView>
+                </View>
 
-                <SafeAreaView style={styles.itemContainer}>
-                    <Text style={styles.itemName}>ÁO THỂ THAO HÈ - ÁO THUN NAM  NỮ NEW ERA X MLB TICKET SHOP BLK T-SHIRTS "BLACK"</Text>
-                    <SafeAreaView style={styles.statisticContainer}>
-                        <SafeAreaView style={[styles.rowContainer, {paddingRight: 20}]}>
-                            <RateIcon color={'#FFC300'}/>
-                            <Text style={styles.statisticText}>5 / 5</Text>
-                        </SafeAreaView>
-                        <SafeAreaView style={[styles.rowContainer, {paddingLeft: 20, borderLeftWidth: 0.5}]}>
+                <View style={styles.itemContainer}>
+                    <Text style={styles.itemText}>{productDetail?.product_name}</Text>
+                    <Text style={styles.itemText}>{productDetail?.product_price && formatCurrency(productDetail?.product_price)}</Text>
+                    <View style={styles.statisticContainer}>
+                        <View style={[styles.rowContainer, { paddingRight: 20 }]}>
+                            <RateIcon color={"#FFC300"} />
+                            <Text style={styles.statisticText}>{productDetail?.product_ratingAverage}</Text>
+                        </View>
+                        <View style={[styles.rowContainer, { paddingLeft: 20, borderLeftWidth: 0.5 }]}>
                             <Text style={styles.statisticText}>Sold: 1</Text>
-                        </SafeAreaView>
-                    </SafeAreaView>
-                </SafeAreaView>
-                
+                        </View>
+                    </View>
+                </View>
+
                 <Pressable
-                    style={[styles.detailContainer, {flexDirection: 'row'}]}
+                    style={styles.detailContainer}
                     onPress={handleOpenBottomSheet}
                 >
                     <Text style={styles.title}>Product Detail</Text>
-                    <RightArrowIcon/>
+                    <RightArrowIcon />
                 </Pressable>
 
                 <Modal
@@ -59,94 +162,114 @@ export default function ProductDetailScreen({ navigation }) {
                     transparent={true}
                     visible={isBottomSheetOpen}
                     onRequestClose={handleCloseBottomSheet}
-                    style={{ borderRadius: 8 }} >
-                    <SafeAreaView style={styles.modalContainer}>
+                >
+                    <View style={styles.modalContainer}>
                         <View style={styles.modalContent}>
-                            <Button title="Click" onPress={handleCloseBottomSheet}>OK</Button>
-                        </View>
-                    </SafeAreaView>
-                </Modal>
-                
-                <Pressable style={[styles.detailContainer, {flexDirection: 'column', alignItems: 'flex-start'}]}>
-                    <Text style={[styles.title, {marginBottom: 10}]}>Product Description</Text>
-                    <Text style={styles.contentText}>New product</Text>
-                </Pressable>
+                            <Button title="Close" onPress={handleCloseBottomSheet} />
 
-                <ProductRating/>
+                            <View style={styles.detailContent}>
+                                <Text style={styles.itemText}>Brand: </Text>
+                                <Text style={styles.itemTextWithoutFontWeight}>{productDetail?.product_attributes.brand}</Text>
+                            </View>
+
+                            <View style={styles.detailContent}>
+                                <Text style={styles.itemText}>Size: </Text>
+                                <Text style={styles.itemTextWithoutFontWeight}>{productDetail?.product_attributes.size}</Text>
+                            </View>
+
+                            <View style={styles.detailContent}>
+                                <Text style={styles.itemText}>Material: </Text>
+                                <Text style={styles.itemTextWithoutFontWeight}>{productDetail?.product_attributes.material}</Text>
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
+
+                <View style={[styles.detailContainer, { flexDirection: "column", alignItems: "flex-start" }]}>
+                    <Text style={[styles.title, { marginBottom: 10 }]}>Product Description</Text>
+                    <Text style={styles.contentText}>{productDetail?.product_description}</Text>
+                </View>
+
+                <ProductRating productId={id} rating={productDetail?.product_ratingAverage} />
             </ScrollView>
-            <SafeAreaView style={{ position: 'absolute', bottom: 0 }}>
-                <ProductFooter/>
-            </SafeAreaView>
-        </SafeAreaView>
-    )
+            <View style={{ position: "absolute", bottom: 0, maginTop: 20 }}>
+                <ProductFooter onPress={handleAddToCart} />
+            </View>
+        </View>
+    );
+
 }
 const styles = StyleSheet.create({
     image: {
-        width: '100%',
-        maxHeight: 350
+        width: "100%",
+        Height: 350,
+        flex: 1
     },
     imageContainer: {
-        flexDirection: 'row',
-        width: '100%',
+        flexDirection: "row",
+        width: "100%",
         height: 80,
-        marginVertical: 10
+        marginVertical: 10,
     },
     otherImage: {
         width: 80,
-        maxHeight: '100%',
-        marginHorizontal: 5
+        maxHeight: "100%",
+        marginHorizontal: 5,
     },
     itemStyles: {
-        marginVertical: 40,
-        overflow: 'hidden',
+        display: "flex",
+        overflow: "hidden",
     },
     itemContainer: {
-        marginHorizontal: 5
+        marginHorizontal: 5,
     },
-    itemName: {
+    itemText: {
         fontSize: 20,
-        fontWeight: 'bold',
-        marginVertical: 10
+        fontWeight: "bold",
+        marginVertical: 5,
     },
     statisticContainer: {
-        flexDirection: 'row',
-        marginVertical: 10
+        flexDirection: "row",
+        marginVertical: 10,
     },
     rowContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
+        flexDirection: "row",
+        alignItems: "center",
     },
     statisticText: {
         fontSize: 16,
         marginHorizontal: 5,
     },
     detailContainer: {
-        width: '100%',
-        backgroundColor: '#E8E8E8',
-        justifyContent: 'space-between',
+        width: "100%",
+        backgroundColor: "#E8E8E8",
+        justifyContent: "space-between",
         marginTop: 10,
         paddingVertical: 5,
         paddingHorizontal: 20,
-        alignItems: 'center'
+        alignItems: "start",
     },
     title: {
         fontSize: 18,
-        fontWeight: 'bold'
+        fontWeight: "bold",
     },
     contentText: {
         fontSize: 16,
     },
     moreText: {
         fontSize: 16,
-        color: '#38A59F'
+        color: "#38A59F",
     },
     modalContainer: {
         flex: 1,
-        justifyContent: 'flex-end',
+        justifyContent: "flex-end",
     },
     modalContent: {
-        backgroundColor: 'white',
+        backgroundColor: "white",
         padding: 20,
-        height: '50%',
-    }
+    },
+    detailContent: {
+        flexDirection: "row",
+        marginVertical: 10,
+    },
 });

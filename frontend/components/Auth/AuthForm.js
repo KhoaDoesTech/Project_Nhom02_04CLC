@@ -61,27 +61,25 @@ function AuthForm({ isLogin, isResetPassword, onSubmit, credentialInvalid }) {
                 secure={true}
                 onChange={updateInputValueHandler.bind(this, "password")}
             />
-            {isResetPassword ||
-                (!isLogin && (
-                    <InputField
-                        source={require("../../assets/images/icons-lock.png")}
-                        placeHolder="Confirm password"
-                        secure={true}
-                        onChange={updateInputValueHandler.bind(this, "confirmPassword")}
-                    />
-                ))}
+            {(isResetPassword || !isLogin) && (
+                <InputField
+                    source={require("../../assets/images/icons-lock.png")}
+                    placeHolder="Confirm password"
+                    secure={true}
+                    onChange={updateInputValueHandler.bind(this, "confirmPassword")}
+                />
+            )}
             {isLogin && !isResetPassword && (
                 <>
                     <Option />
                     <Button content="Sign in to S&C" onPress={submitHandler} />
-                    <SignUp />
                 </>
             )}
 
             {!isLogin && !isResetPassword && (
                 <Button content="Create account" onPress={submitHandler} />
             )}
-            {!isLogin && isResetPassword && (
+            {isResetPassword && (
                 <Button content="Reset password" onPress={submitHandler} />
             )}
 

@@ -10,7 +10,7 @@ export default function FooterPurchase() {
 
   return (
     <View style={styles.container}>
-      <CheckBox/>
+      <CheckBox />
       <Text style={styles.selectAllText}>Select all</Text>
       <Text style={styles.totalPrice}>Total payment: {totalPrice}</Text>
       <TouchableOpacity style={styles.checkoutButton}>

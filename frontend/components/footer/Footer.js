@@ -7,7 +7,7 @@ import MapIcon from "../icons/MapIcon";
 import MessageIcon from "../icons/MessageIcon";
 import AddIcon from "../icons/AddIcon";
 
-export default function Footer() {
+export default function Footer(props) {
     const navigation = useNavigation();
     const [home, setHome] = useState(true);
     const [product, setProduct] = useState(false);
@@ -48,7 +48,7 @@ export default function Footer() {
 
     return (
         <View style={styles.container}>
-            <Pressable style={styles.addBtn}>
+            <Pressable style={styles.addBtn} onPress={props.openAddHandler}>
                 <AddIcon />
             </Pressable>
             <View style={styles.itemContainer}>

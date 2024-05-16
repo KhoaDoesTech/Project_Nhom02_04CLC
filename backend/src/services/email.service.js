@@ -6,12 +6,12 @@ const {
   findTemplateByTag,
   findTemplateByName,
 } = require('../models/repositories/template.repo');
-const welcomeTemplate = require('~/templates/welcome.template');
+// const welcomeTemplate = require('~/templates/welcome.template');
 
 class EmailService {
   static addTemplate = async ({
     tem_name,
-    tem_html = welcomeTemplate,
+    tem_html,
     tem_subject,
     tem_tag = 'marketing',
     tem_status = true,

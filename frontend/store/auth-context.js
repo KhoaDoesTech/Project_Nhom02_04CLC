@@ -10,23 +10,34 @@ export const AuthContext = createContext({
     logout: () => { }
 });
 
+async function setToken(name, value) {
+    try {
+        await AsyncStorage.setItem(name, value);
+    } catch (error) {
+    }
+}
+
+
 function AuthContextProvider({ children }) {
     const [authToken, setAuthToken] = useState();
     const [refreshToken, setRefreshToken] = useState();
-    const [userInfo, setUserInfo] = useState({ email: '', username: '' });
+    const [userInfo, setUserInfo] = useState({ userId: '', email: '', username: '' });
 
-    function authenticate(refreshToken, accessToken, username, email) {
+    function authenticate({ refreshToken, accessToken, userId, username, email }) {
         setAuthToken(accessToken);
         setRefreshToken(refreshToken);
-        setUserInfo({ email: email, username: username })
-        AsyncStorage.setItem('refreshToken', refreshToken);
-        AsyncStorage.setItem('accessToken', accessToken);
+        setUserInfo({ userId, email, username })
+        if (accessToken && refreshToken) {
+            setToken('refreshToken', refreshToken);
+            setToken('accessToken', accessToken);
+        }
     }
 
     function logout() {
         setAuthToken(null);
         setRefreshToken(null);
-        setUserInfo({ email: null, username: null })
+        setUserInfo({ userId: null, email: null, username: null })
+
         AsyncStorage.removeItem('refreshToken');
         AsyncStorage.removeItem('accessToken');
     }

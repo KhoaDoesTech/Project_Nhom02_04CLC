@@ -3,7 +3,7 @@ import CheckBox from 'expo-checkbox';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
-export default function Option() {
+export default function Option(props) {
     const navigation = useNavigation();
     const [toggleCheckBox, setToggleCheckBox] = useState(false)
     return (
@@ -16,7 +16,7 @@ export default function Option() {
                 />
                 <Text style={{ marginLeft: 5 }}>Auto sign in</Text>
             </View>
-            <Pressable onPress={() => navigation.navigate('FogotPassword')}>
+            <Pressable onPress={() => navigation.replace('FogotPassword')}>
                 <Text style={{ color: '#38A59F' }}>Forgot Password?</Text>
             </Pressable>
         </View >

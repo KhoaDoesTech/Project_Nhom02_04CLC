@@ -1,9 +1,9 @@
 import { StyleSheet, View, Text } from 'react-native';
 
-export default function ProductName() {
+export default function ProductName(props) {
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>Black T-Shirt</Text>
+            <Text numberOfLines={1} style={styles.text}>{props.ProductName}</Text>
         </View>
     );
 }

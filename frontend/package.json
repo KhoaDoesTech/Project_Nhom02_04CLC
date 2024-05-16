@@ -34,6 +34,7 @@
     "react-native-svg": "14.1.0",
     "react-native-svg-transformer": "^1.3.0",
     "react-native-tailwindcss": "^1.1.11",
+    "react-native-toast-message": "^2.2.0",
     "react-native-web": "~0.19.6",
     "tailwind-react-native-classnames": "^1.5.1",
     "tailwind-rn": "^4.2.0"

@@ -2,10 +2,12 @@ import { useState } from "react";
 import { StyleSheet, View, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import AuthForm from "./AuthForm";
-
+import SignUp from "./components/SignUp";
 
 function AuthContent({ isLogin, isResetPassword, onAuthenticate }) {
     const navigation = useNavigation();
+
+    const mode = isLogin ? 'login' : (isResetPassword ? 'reset-password' : 'signup');
 
     const [credentialIsInvalid, setCredentialIsInvalid] = useState({
         email: false,
@@ -14,11 +16,11 @@ function AuthContent({ isLogin, isResetPassword, onAuthenticate }) {
     });
 
     function switchAuthModeHandler() {
-        isLogin
-            ? navigation.replace("Login")
-            : isResetPassword
-                ? navigation.replace("FogotPassword")
-                : navigation.replace("SignUp");
+        if (isLogin) {
+            navigation.replace("SignUp");
+        } else {
+            navigation.replace("Login");
+        }
     }
 
     function submitHandler(credentials) {
@@ -40,17 +42,22 @@ function AuthContent({ isLogin, isResetPassword, onAuthenticate }) {
             });
             return;
         }
-        onAuthenticate({ email, password });
+        onAuthenticate({ mode, email, password });
     }
 
     return (
         <View>
             <AuthForm
                 isLogin={isLogin}
+                isResetPassword={isResetPassword}
                 onSubmit={submitHandler}
                 credentialInvalid={credentialIsInvalid}
             />
-
+            <SignUp
+                isLogin={isLogin}
+                isResetPassword={isResetPassword}
+                onPress={switchAuthModeHandler}
+            />
         </View>
     );
 }

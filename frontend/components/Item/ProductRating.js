@@ -1,41 +1,62 @@
 import { Image, SafeAreaView, StyleSheet, ScrollView, Text, Pressable } from "react-native";
 import RateIcon from "../icons/RateIcon";
 import RightArrowIcon from "../icons/RightArrowIcon";
+import Comment from "./Comment.js";
+import { useEffect, useState, useContext } from "react";
+import { AuthContext } from '../../store/auth-context.js';
 
-export default function ProductRating({ navigation }) {
+import { getProductComment } from "../../API/Comment/index.js";
+import { useNavigation } from "@react-navigation/native";
+
+export default function ProductRating(props) {
+    const navigation = useNavigation();
+    const [commentList, setCommentList] = useState([]);
+
+    const authCtx = useContext(AuthContext)
+    const userId = authCtx.userInfo.userId
+    const accessToken = authCtx.token
+
+    useEffect(() => {
+        async function fetchAllComment() {
+            try {
+                const comments = await getProductComment(3, props.productId, userId, accessToken);
+                setCommentList(comments);
+            } catch (error) {
+            }
+        }
+        fetchAllComment();
+    }, []);
+
     return (
         <SafeAreaView style={styles.container}>
-            <Pressable style={[styles.detailContainer, {flexDirection: 'row'}]}>
+            <Pressable style={[styles.detailContainer, { flexDirection: 'row' }]}>
                 <SafeAreaView>
                     <Text style={styles.title}>Product Reviews</Text>
-                    <SafeAreaView style={[styles.rowContainer, {paddingRight: 20}]}>
-                        <RateIcon color={'#FFC300'}/>
-                        <RateIcon color={'#FFC300'}/>
-                        <RateIcon color={'#FFC300'}/>
-                        <RateIcon color={'#FFC300'}/>
-                        <RateIcon color={'#FFC300'}/>
-                        <Text style={styles.statisticText}>5 / 5</Text>
-                        <Text style={styles.statisticText}>{"(1 review)"}</Text>
+                    <SafeAreaView style={[styles.rowContainer, { paddingRight: 20 }]}>
+                        <RateIcon color={'#FFC300'} />
+                        <RateIcon color={'#FFC300'} />
+                        <RateIcon color={'#FFC300'} />
+                        <RateIcon color={'#FFC300'} />
+                        <RateIcon color={'#FFC300'} />
+                        <Text style={styles.statisticText}>{props.rating}</Text>
                     </SafeAreaView>
                 </SafeAreaView>
-                <SafeAreaView style={styles.rowContainer}>
+                <Pressable
+                    style={styles.rowContainer}
+                    onPress={() => navigation.navigate("AllComment", {
+                        id: props.productId,
+                    })}
+                >
                     <Text style={styles.more}>All</Text>
-                    <RightArrowIcon/>
-                </SafeAreaView>
+                    <RightArrowIcon />
+                </Pressable>
             </Pressable>
             <SafeAreaView style={styles.reviewDetail}>
-                <SafeAreaView style={[styles.rowContainer, {marginBottom: 0}]}>
-                    <Text style={styles.userName}>hoangdang</Text>
-                    <Text style={styles.reviewDate}>01/04/2024</Text>
-                </SafeAreaView>
-                <SafeAreaView style={[styles.rowContainer, {paddingRight: 20}]}>
-                    <RateIcon color={'#FFC300'}/>
-                    <RateIcon color={'#FFC300'}/>
-                    <RateIcon color={'#FFC300'}/>
-                    <RateIcon color={'#FFC300'}/>
-                    <RateIcon color={'#FFC300'}/>
-                </SafeAreaView>
-                <Text style={styles.reviewContent}>Good product</Text>
+                {commentList?.map((comment) => (
+                    <Comment
+                        key={comment._id}
+                        content={comment.comment_content}></Comment>
+                ))}
             </SafeAreaView>
         </SafeAreaView>
     )

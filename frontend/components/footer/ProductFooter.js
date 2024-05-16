@@ -1,33 +1,28 @@
-import React, { useState } from 'react';
-import { SafeAreaView, Pressable, Text, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, Pressable, Text, StyleSheet } from 'react-native';
 import MessageIcon from '../icons/MessageIcon';
-import AddToCartIcon from '../icons/AddToCartIcon';
+import AddToCartIcon from "../icons/AddToCartIcon"
 
-const ProductFooter = () => {
-  const [cart, setCart] = useState(false);
-
-  const addToCart = () => {
-    setCart(!cart);
-  };
+const ProductFooter = (props) => {
 
   return (
-    <SafeAreaView style={styles.container}>
-      <SafeAreaView style={[styles.rowContainer, {backgroundColor: '#D9D9D9'}]}>
-        <SafeAreaView style={styles.item}>
-          <Pressable style={styles.iconButton}>
-            <MessageIcon color={'#000000'}/>
+    <View style={styles.container}>
+      <View style={[styles.rowContainer, { backgroundColor: '#D9D9D9' }]}>
+        <View style={styles.item}>
+          <Pressable style={styles.iconButton} onPress={() => { }}>
+            <MessageIcon color={'#000000'} />
           </Pressable>
-          <Pressable style={styles.iconButton}>
-            <AddToCartIcon color={'#000000'}/>
+          <Pressable style={styles.iconButton} onPress={props.onPress}>
+            <AddToCartIcon color={'#000000'} />
           </Pressable>
-        </SafeAreaView>
-      </SafeAreaView>
-      <SafeAreaView style={[styles.rowContainer, {backgroundColor: '#38A59F'}]}>
-        <Pressable style={styles.item} onPress={addToCart}>
+        </View>
+      </View>
+      <View style={[styles.rowContainer, { backgroundColor: '#38A59F' }]}>
+        <Pressable style={styles.item} >
           <Text style={styles.text}>Buy now</Text>
         </Pressable>
-      </SafeAreaView>
-    </SafeAreaView>
+      </View>
+    </View>
   );
 };
 

@@ -3,7 +3,7 @@ import { View, Pressable, StyleSheet, Image, TextInput } from "react-native";
 export default function InputField(props) {
     const icon = props.source;
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, { ...props }]}  >
             <Image style={styles.icon} source={props.source} />
             <TextInput
                 style={[styles.input]}
@@ -12,6 +12,7 @@ export default function InputField(props) {
                 onChangeText={props.onChange}
                 value={props.value}
                 keyboardType={props.keyboardType}
+
             />
         </View>
     );
@@ -19,6 +20,7 @@ export default function InputField(props) {
 
 const styles = StyleSheet.create({
     container: {
+        width: '100%',
         flexDirection: "row",
         borderWidth: 2,
         borderColor: "#ccc",
@@ -33,11 +35,12 @@ const styles = StyleSheet.create({
         marginRight: 8,
     },
     input: {
-        paddingVertical: 8,
+        width: '100%',
+        paddingVertical: 2,
         paddingHorizontal: 6,
-        backgroundColor: '#f9beda',
         borderRadius: 4,
         fontSize: 16,
+        overflow: 'hidden'
     },
     inputInvalid: {
         backgroundColor: '#fcdcbf',

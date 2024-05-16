@@ -6,18 +6,13 @@ import {
   DrawerToggleButton,
 } from "@react-navigation/drawer";
 import { useContext, useEffect, useState } from "react";
+import Toast from "react-native-toast-message";
 import { TouchableOpacity, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // import AppLoading from "expo-app-loading";
 
-import {
-  HomeScreen,
-  LoginScreen,
-  SignUpScreen,
-  WelcomeScreen,
-} from "./screens";
 import * as screens from "./screens";
 import MenuComponent from "./components/MenuComponent";
 import AuthConTextProvider, { AuthContext } from "./store/auth-context";
@@ -55,6 +50,11 @@ function Auth() {
       <Stack.Screen
         name="FogotPassword"
         component={screens.ForgotPasswordScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="OTPScreen"
+        component={screens.OTPScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
@@ -114,7 +114,7 @@ function HomeMenu() {
               style={{ paddingLeft: 20 }}
               onPress={authCtx.logout}
             >
-              <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Logout</Text>
+              <Text style={{ fontSize: 16, fontWeight: "bold" }}>Logout</Text>
             </TouchableOpacity>
           ),
           drawerPosition: "right",
@@ -134,11 +134,11 @@ function HomeMenu() {
       <Drawer.Screen
         name="Level"
         component={screens.LevelScreen}
-        options={{ headerShown: false, drawerPosition: "right" }}
+        options={{ headerShown: true, drawerPosition: "right" }}
       />
       <Drawer.Screen
-        name="Revenue"
-        component={screens.RevenueScreen}
+        name="Inventory"
+        component={screens.InventoryScreen}
         options={{ headerShown: false, drawerPosition: "right" }}
       />
       <Drawer.Screen
@@ -149,6 +149,7 @@ function HomeMenu() {
     </Drawer.Navigator>
   );
 }
+
 
 function HomeStack() {
   return (
@@ -161,7 +162,6 @@ function HomeStack() {
         component={HomeMenu}
         options={{ headerShown: false }}
       />
-
       <Stack.Screen
         name="Home"
         component={screens.HomeScreen}
@@ -184,7 +184,37 @@ function HomeStack() {
       />
       <Stack.Screen
         name="ProductDetail"
-        component={screens.ProductDetail}
+        component={screens.ProductDetailScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Search"
+        component={screens.SearchScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="AllComment"
+        component={screens.AllCommentScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ShopProduct"
+        component={screens.ShopProductScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ShopDiscount"
+        component={screens.ShopDiscountScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ShopOrder"
+        component={screens.ShopOrderScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="AddProduct"
+        component={screens.AddProductScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
@@ -198,6 +228,7 @@ function Navigation() {
     <NavigationContainer>
       {!authCtx.isAuthenticated && <Auth />}
       {authCtx.isAuthenticated && <HomeStack />}
+      <Toast />
     </NavigationContainer>
   );
 }
@@ -209,18 +240,21 @@ function Root() {
 
   useEffect(() => {
     async function fetchToken() {
-      const storedToken = await AsyncStorage.getItem("accessToken");
-      if (storedToken) {
-        authCtx.authenticate(storedToken);
+      try {
+        const storedToken = await AsyncStorage.getItem("accessToken");
+        if (storedToken) {
+          authCtx.authenticate(storedToken);
+        }
+        // setIsTryingLogin(false);
+      } catch (error) {
       }
-      // setIsTryingLogin(false);
     }
     fetchToken();
   }, []);
 
   // if (isTryingLogin) {
   //   return <AppLoading />;
-  // }
+  // }s
 
   return <Navigation />;
 }
@@ -229,6 +263,7 @@ export default function App() {
   return (
     <AuthConTextProvider>
       <Root />
+
     </AuthConTextProvider>
   );
 }

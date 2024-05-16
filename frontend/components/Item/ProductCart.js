@@ -7,21 +7,22 @@ import Status from './Status';
 import CheckBox from './CheckBox';
 import Quantity from './Quantity';
 import Delete from './Delete';
+import { formatCurrency } from '../../util/common';
 
-export default function ProductCart() {
+export default function ProductCart(props) {
     return (
         <SafeAreaView style={styles.container}>
             <Pressable style={styles.container__details}>
-                <CheckBox style={styles.checkbox}/>
-                <Image style={styles.image} source={require('../../assets/images/product1.png')} />
+                <CheckBox style={styles.checkbox} />
+                <Image style={styles.image} source={{ uri: props.image }} />
                 <SafeAreaView style={styles.info}>
-                    <Owner/>
-                    <ProductName />
-                    <PriceNotFree/>
-                    <Quantity/>
+                    <Owner />
+                    <ProductName ProductName={props.productName} />
+                    <PriceNotFree price={formatCurrency(props.price)} />
+                    <Quantity quantity={props.quantity} />
                 </SafeAreaView>
                 <SafeAreaView style={styles.status}>
-                    <Delete/>
+                    <Delete />
                 </SafeAreaView>
             </Pressable>
         </SafeAreaView>
@@ -53,6 +54,7 @@ const styles = StyleSheet.create({
         marginRight: 16,
     },
     info: {
+        width: '100%',
         flex: 1,
         justifyContent: 'center',
     },

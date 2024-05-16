@@ -6,7 +6,7 @@ export default function Delete() {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.deleteButton}>
-        <Ionicons name="trash-outline" size={24} color="black" />
+        <Ionicons name="trash-outline" size={24} color="red" />
       </TouchableOpacity>
     </View>
   );

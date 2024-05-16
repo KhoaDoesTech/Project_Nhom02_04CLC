@@ -1,9 +1,9 @@
 import { StyleSheet, View, Text } from 'react-native';
 
-export default function PriceNotFree() {
+export default function PriceNotFree(props) {
     return (
         <View >
-                <Text style={styles.text}>12$</Text>
+            <Text style={styles.text}>{props.price}</Text>
         </View>
     );
 }

@@ -23,7 +23,7 @@ const ProfileScreen = ({ navigation }) => {
     return (
         <ScrollView style={screenStyle}>
             <View style={headerStyle.container}>
-                {/* <BackButton onPress={() => navigation.navigate("Home")} /> */}
+                <BackButton onPress={() => navigation.goBack("Home")} />
                 <Text style={headerStyle.text}>My Profile</Text>
                 <HeaderButton
                     icon={<Ionicons name="reorder-three" size={30} color="black" />}

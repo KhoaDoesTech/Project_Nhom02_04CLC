@@ -1,19 +1,21 @@
-import { StyleSheet, Pressable, Text, Image, SafeAreaView } from 'react-native';
+import { StyleSheet, Pressable, Text, Image, SafeAreaView, ImageBackground } from 'react-native';
 
 import PriceFree from './PriceFree';
 import ProductName from './ProductName';
 import Owner from './Owner';
 import Status from './Status';
+import { formatCurrency } from '../../util/common';
 
-export default function Product({ onPress }) {
+export default function Product(props) {
     return (
         <SafeAreaView style={styles.container}>
-            <Pressable style={styles.container__details} onPress={onPress} >
-                <Image style={styles.image} source={require('../../assets/images/image2.png')} />
+            <Pressable style={styles.container__details} onPress={props.onPress}>
+                <Image style={styles.image} source={{ uri: `${props.product.product_thumb}` }} />
                 <SafeAreaView style={styles.info}>
-                    <PriceFree />
-                    <ProductName />
-                    <Owner />
+                    {props.product?.product_price ? <Text style={{ fontSize: 17, fontWeight: 'bold' }}>{formatCurrency(props.product?.product_price)}</Text> : <PriceFree />}
+
+                    <ProductName ProductName={props.product?.product_name} />
+                    <Owner Owner={props.product?.product_description} />
                     <Status />
                 </SafeAreaView>
             </Pressable>

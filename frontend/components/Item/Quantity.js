@@ -3,15 +3,16 @@ import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
-export default function Quantity() {
+export default function Quantity(props) {
     return (
         <TouchableOpacity style={styles.quantityContainer}>
             {/* <Ionicons name="remove-circle-outline" size={24} color="black" />
             <Text style={styles.quantityText}>2</Text>
             <Ionicons name="add-circle-outline" size={24} color="black" /> */}
-            <Feather name="minus-square" size={20} color="black" />
-                <Text style={styles.quantityText}>2</Text>
+
             <Feather name="plus-square" size={20} color="black" />
+            <Text style={styles.quantityText}>{props.quantity}</Text>
+            <Feather name="minus-square" size={20} color="black" />
         </TouchableOpacity>
     );
 }

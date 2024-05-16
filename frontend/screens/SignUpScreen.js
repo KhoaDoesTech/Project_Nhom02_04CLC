@@ -1,48 +1,43 @@
-import { useState } from "react";
-import { SafeAreaView, StyleSheet, Modal, View, Text, Pressable, Image } from "react-native";
+import { useContext, useState } from "react";
+import { SafeAreaView, StyleSheet, View, Image, Alert } from "react-native";
+import AuthContent from "../components/Auth/AuthContent";
+import { AuthContext } from "../store/auth-context";
 import { useNavigation } from '@react-navigation/native';
-import InputField from "../components/Auth/InputField.js";
-import ButtonLogin from "../components/Auth/components/Button.js";
-import HomeScreen from "./HomeScreen.js";
-export default function SignUpScreen({ navigation }) {
+import { auth } from "../API/auth";
+export default function SignUpScreen() {
+  const navigation = useNavigation();
+  const authCtx = useContext(AuthContext);
+  const handleSignUp = async ({ mode, email, password }) => {
+    try {
+      const response = await auth({ mode, email, password });
+      if (response?.user) {
+        authCtx.authenticate({ email: response.user });
+        navigation.navigate("OTPScreen");
+      }
+    } catch (error) {
+
+    }
+  };
 
   return (
     <SafeAreaView>
       <View style={styles.container}>
         <View style={styles.header}>
-          <Image style={styles.header__img_logo} source={require("../assets/images/logo copy.png")} />
-
+          <Image source={require("../assets/images/logo copy.png")} />
         </View>
-        <View style={styles.input_container}>
-          <Text style={styles.text}>Create your account</Text>
-          <InputField placeHolder="Enter User Name" isShowed={false} source={require("../assets/images/icons-user.png")} />
-          <InputField placeHolder="Enter Password" isShowed={true} source={require("../assets/images/icons-lock.png")} />
-          <InputField placeHolder="Confirm Password" isShowed={true} source={require("../assets/images/icons-lock.png")} />
-          <ButtonLogin content="Sign up" onPress={() => navigation.navigate('Home')} />
-        </View>
-
+        <AuthContent onAuthenticate={handleSignUp} />
       </View>
     </SafeAreaView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: '15%',
-    marginHorizontal: '5%'
+    paddingTop: "10%",
+    justifyContent: "center",
   },
-
-  header__img_logo: {
-    marginVertical: 16,
+  header: {
+    marginVertical: "8%",
+    marginLeft: "5%",
   },
-
-  text: {
-    fontSize: 20,
-    fontWeight: '700',
-  },
-
-  input_container: {
-    marginTop: 16
-  }
-
-})
+});
