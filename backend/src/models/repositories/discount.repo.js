@@ -6,7 +6,7 @@ const { convertToObjectIdMongodb } = require('~/utils/misc');
 
 const findAllDiscountCode = async ({ select, queryInput }) => {
   const documents = new QueryFeatures(
-    discountModel.sort({ _id: 1 }).select(select),
+    discountModel.find().sort({ _id: 1 }).select(select),
     queryInput
   )
     .limitFields()

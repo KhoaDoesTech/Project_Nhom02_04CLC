@@ -37,7 +37,7 @@ class DiscountController {
     new OK({
       message: 'List Cart success',
       metadata: await await DiscountService.getAllDiscountCodesByShop({
-        ...req.query,
+        query: req.query,
         shopId: req.user.userId,
       }),
     }).send(res);

@@ -6,7 +6,7 @@ const CommentService = require('../services/comment.service');
 class CommentController {
   createComment = async (req, res, next) => {
     new OK({
-      message: 'List Cart success',
+      message: 'Create Comment success',
       metadata: await CommentService.createComment({
         ...req.body,
         userId: req.user.userId,
@@ -16,7 +16,7 @@ class CommentController {
   getCommentsByParentId = async (req, res, next) => {
     const { productId, parentCommentId, ...query } = req.query;
     new OK({
-      message: 'List Cart success',
+      message: 'List Comment success',
       metadata: await CommentService.getCommentsByParentId({
         productId,
         parentCommentId,
