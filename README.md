@@ -12,7 +12,39 @@ cd backend
 bun install
 ```
 
-Tạo file .env với các biến môi trường cần thiết
+Tạo file .env với các biến môi trường cần thiết:
+```javascript
+# Develop 
+# DEV_DB_URL=
+DEV_DB_URL=
+
+# DEV_MAILER_USER=
+# DEV_MAILER_PASS=
+DEV_MAILER_USER=
+DEV_MAILER_PASS=
+
+# # AWS Email
+# DEV_MAILER_USER=
+# DEV_MAILER_PASS=
+
+# Production 
+PRO_DB_URL=
+
+PRO_MAILER_USER=
+PRO_MAILER_PASS=
+PRO_MAILER_SENDER=
+
+PAYPAL_CLIENT_ID=
+PAYPAL_APP_SECRET=
+PAYPAL_API_URL=
+
+DISCORD_TOKEN=
+DISCORD_CHANNEL_ID=
+
+CLOUDINARY_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+```
 
 Chạy backend:
 ```bash
