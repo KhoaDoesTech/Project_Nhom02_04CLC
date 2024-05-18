@@ -2,7 +2,7 @@
 - Node.js phiên bản 14 trở lên
 - Bun.js phiên bản 0.5.0 trở lên
 - React Native CLI
-- 
+  
 2. Cài đặt và chạy
 Backend (Bun.js)
 Vào thư mục backend, cài đặt các package cần thiết:
